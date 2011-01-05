@@ -2,8 +2,8 @@
 /*
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
-Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP 3.0.3. It might work with elder versions too, but those will never be explicitly supported. The plugin has a couple of adjustable parameters.  You can choose the number of posts displayed, the offset on your homepage and whether or not a line is displayed between the posts. Further customization will be added in later versions. Starting from version 2.3, it has a multi widget.
-Version: 2.9
+Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable.  You can choose the number of posts displayed, the offset (only your homepage or always) and whether or not a line is displayed between the posts. And mutch more.
+Version: 2.9.1
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -32,25 +32,41 @@ License: GPL3
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die("Sorry, you don't have direct access to this page."); }
 
 
+// import laguage files
+
+load_plugin_textdomain('category_column', false , basename(dirname(__FILE__)).'/languages');
+
+
+
 // extending the widget class
  
 class Category_Column_Widget extends WP_Widget {
  
  function Category_Column_Widget() {
- parent::WP_Widget(false, $name = 'Category Column');
+	 
+	 $widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', 'cc-widget') );
+	 
+	 parent::WP_Widget(false, $name = 'Category Column', $widget_opts);
  }
  
- function form($instance) {
- $title = esc_attr($instance['title']);
- $postcount = esc_attr($instance['postcount']);
- $offset = esc_attr($instance['offset']);
- $homepage = esc_attr($instance['homepage']);
- $list = esc_attr($instance['list']);
- $wordcount = esc_attr($instance['wordcount']);
- $words = esc_attr($instance['words']);
- $line=esc_attr($instance['line']);
- $line_color=esc_attr($instance['line_color']);
- $style=esc_attr($instance['style']);
+function form($instance) {
+	
+	// setup some default settings
+    
+	$defaults = array( 'postcount' => 5, 'offset' => 3, 'homepage' => true, 'wordcount' => 3, 'line' => 1, 'line_color' => '#dddddd');
+    
+	$instance = wp_parse_args( (array) $instance, $defaults );
+	
+	$title = esc_attr($instance['title']);
+	$postcount = esc_attr($instance['postcount']);
+	$offset = esc_attr($instance['offset']);
+	$homepage = esc_attr($instance['homepage']);
+	$list = esc_attr($instance['list']);
+	$wordcount = esc_attr($instance['wordcount']);
+	$words = esc_attr($instance['words']);
+	$line=esc_attr($instance['line']);
+	$line_color=esc_attr($instance['line_color']);
+	$style=esc_attr($instance['style']);
  
  ?>
  
@@ -111,49 +127,58 @@ class Category_Column_Widget extends WP_Widget {
 <p>
  <label for="<?php echo $this->get_field_id('style'); ?>">
  <?php _e('Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget'); ?>
- <input id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>" type="textarea" value="<?php echo $style; ?>" />
+ <textarea id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>"><?php echo $style; ?></textarea>
  </label>
 </p>
 <?php
  }
  
- function update($new_instance, $old_instance) {
- 
- $instance = $old_instance;
- 
- $instance['title'] = strip_tags($new_instance['title']);
- $instance['postcount'] = strip_tags($new_instance['postcount']);
- $instance['offset'] = strip_tags($new_instance['offset']);
- $instance['homepage'] = strip_tags($new_instance['homepage']);
- $instance['list'] = strip_tags($new_instance['list']); 
- $instance['wordcount'] = strip_tags($new_instance['wordcount']);
- $instance['words'] = strip_tags($new_instance['words']);
- $instance['line'] = strip_tags($new_instance['line']);
- $instance['line_color'] = strip_tags($new_instance['line_color']);
- $instance['style'] = strip_tags($new_instance['style']);
 
- return $instance;
+function update($new_instance, $old_instance) {
+	 
+	 $instance = $old_instance;
+	 
+	 $instance['title'] = strip_tags($new_instance['title']);
+	 $instance['postcount'] = strip_tags($new_instance['postcount']);
+	 $instance['offset'] = strip_tags($new_instance['offset']);
+	 $instance['homepage'] = strip_tags($new_instance['homepage']);
+	 $instance['list'] = strip_tags($new_instance['list']); 
+	 $instance['wordcount'] = strip_tags($new_instance['wordcount']);
+	 $instance['words'] = strip_tags($new_instance['words']);
+	 $instance['line'] = strip_tags($new_instance['line']);
+	 $instance['line_color'] = strip_tags($new_instance['line_color']);
+	 $instance['style'] = strip_tags($new_instance['style']);
+	 
+	 return $instance;
 }
  
- function widget($args, $instance) {
- extract( $args );
- $title = apply_filters('widget_title', $instance['title']);
- 
-if (empty($instance['style'])) {
-	$cc_before_widget=$before_widget;
-	$cc_after_widget=$after_widget;
-}
-
-else {
-	$cc_before_widget="<div style=\"".$instance['style']."\">";
-	$cc_after_widget="</div>";
-}
-
- echo $cc_before_widget;
- 
- if ( $title ) {
-	 echo $before_title . $title . $after_title;
- }
+function widget($args, $instance) {
+	
+	extract( $args );
+	
+	$title = apply_filters('widget_title', $instance['title']);
+	
+	if (empty($instance['style'])) {
+		
+		$cc_before_widget=$before_widget;
+		$cc_after_widget=$after_widget;
+		
+	}
+	
+	else {
+		
+		$cc_before_widget="<div style=\"".$instance['style']."\">";
+		$cc_after_widget="</div>";
+		
+	}
+	
+	echo $cc_before_widget;
+	
+	if ( $title ) {
+		
+		echo $before_title . $title . $after_title;
+		
+	}
  
 /* This is the actual function of the plugin, it fills the sidebar with the customized excerpts */
 

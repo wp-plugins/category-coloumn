@@ -1,10 +1,10 @@
 === Category Column ===
-Contributors: tepelstreel
+Contributor: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q
-Tags: column, sidebar, widget, category
+Tags: column, sidebar, widget, category, newspaper
 Requires at least: 2.7
-Tested up to: 3.0.4
-Stable tag: 2.9
+Tested up to: 3.1
+Stable tag: 2.9.1
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -12,9 +12,9 @@ The Category Column does simply, what the name says; it will show excerpts of th
 
 The Category Column is mainly designed to give your blog a bit more of a newspaper behaviour. E.g. The plugin shows the latest posts from all categories with an offset of three posts (which are in the main column) on our homepage.
 
-If there is a post thumbnail, it will be displayed above the headline of the post. No further text will appear. If there is no thumbnail, only the headline and the excerpt of the post will be shown. When the plugin can detect neither the thumbnail nor the excerpt of a post, it will display just the first couple of sentences or (words) of a post.
+If there is a post thumbnail, it will be displayed above the headline of the post. No further text will appear. If there is no thumbnail, only the headline and the excerpt of the post will be shown. When the plugin can detect neither the thumbnail nor the excerpt of a post, it will display just the first couple of sentences (or words) of a post.
 
-Thr Category Column was designed and tested in WP 3.0.3 and 3.0.4. It should work wih versions down to 2.7 but was never tested.
+The Category Column was tested up to WP 3.1. It should work with versions down to 2.7 but was never tested.
 
 == Installation ==
 
@@ -25,9 +25,15 @@ Thr Category Column was designed and tested in WP 3.0.3 and 3.0.4. It should wor
 
 == Frequently Asked Questions ==
 
+No Questions so far.
+
 == Screenshots ==
 
 == Changelog ==
+
+=2.9.1=
+
+Small bugfix with the widget-style textarea and minor changes (widget is filled with default values at first use)
 
 =2.9=
 
