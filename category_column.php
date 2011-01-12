@@ -2,8 +2,8 @@
 /*
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
-Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable.  You can choose the number of posts displayed, the offset (only your homepage or always) and whether or not a line is displayed between the posts. And mutch more.
-Version: 2.9.1
+Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable.  You can choose the number of posts displayed, the offset (only your homepage or always) and whether or not a line is displayed between the posts. And much more.
+Version: 2.9.5
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -44,7 +44,7 @@ class Category_Column_Widget extends WP_Widget {
  
  function Category_Column_Widget() {
 	 
-	 $widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', 'cc-widget') );
+	 $widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.') );
 	 
 	 parent::WP_Widget(false, $name = 'Category Column', $widget_opts);
  }
@@ -78,7 +78,7 @@ function form($instance) {
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('list'); ?>">
- <?php _e("To exclude certain categories or to show just a special category, simply write their ID's separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):"); ?>
+ <?php _e('To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):'); ?>
  <input id="<?php echo $this->get_field_id('list'); ?>" name="<?php echo $this->get_field_name('list'); ?>" type="text" value="<?php echo $list; ?>" />
  </label>
 </p>
@@ -126,7 +126,7 @@ function form($instance) {
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('style'); ?>">
- <?php _e('Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget'); ?>
+ <?php _e('Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.'); ?>
  <textarea id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>"><?php echo $style; ?></textarea>
  </label>
 </p>
@@ -221,6 +221,19 @@ if ($instance['list'] || $cc_cat) {
 	   
 	   else {
 		   
+	   
+	   $fpw_thumb = '';
+	   
+	   ob_start();
+	   
+	   ob_end_clean();
+	   
+	   $fpw_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
+	   $fpw_thumb = $matches [1] [0];
+	   
+	   if (empty($fpw_thumb)) {	   
+		   
+		   
 /* If there is no picture, show headline and excerpt of the post */
 		   
 	
@@ -249,9 +262,9 @@ if ($instance['list'] || $cc_cat) {
 		
 		else {
 			
-			$cc_short=array_slice(explode(". ", end ($cc_text)), 0, $instance['wordcount']-1);
+			$cc_short=array_slice(preg_split("/([\t.!?]+)/", end ($cc_text), -1, PREG_SPLIT_DELIM_CAPTURE), 0, $instance['wordcount']*2);
 			
-			$cc_excerpt=implode(". ", $cc_short).".";
+			$cc_excerpt=implode($cc_short);
 			
 		}
 	
@@ -260,6 +273,35 @@ if ($instance['list'] || $cc_cat) {
 	echo "<p>".$cc_excerpt."</p>";
 	
 	   }
+	   
+	else {
+		
+	   $fpw_image_title=$post->get_the_title;
+	   $fpw_size=getimagesize($fpw_thumb);
+	   
+	   if (($fpw_size[0]/$fpw_size[1])>1) {
+								   
+			$fpw_x=150;
+			$fpw_y=$fpw_size[1]/($fpw_size[0]/$fpw_x);
+			
+		}
+		
+		else {
+											   
+			$fpw_y=150;
+			$fpw_x=$fpw_size[0]/($fpw_size[1]/$fpw_y);
+			
+		}
+	   
+	   ?>
+       <a href="<?php the_permalink(); ?>">
+	   <?php echo "<img title=\"".$fpw_image_title."\" src=\"".$fpw_thumb."\" alt=\"".$fpw_image_title."\" width=\"".$fpw_x."\" height=\"".$fpw_y."\" />"; ?>
+       </a><p><a href="<?php the_permalink(); ?>">
+       <?php the_title(); ?>
+       </a></p>
+	   <?php
+	   
+	}}
 	   
 	if (!empty($instance['line']) && $i <  $instance['postcount']) {
 		
