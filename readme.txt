@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: column, sidebar, widget, category, newspaper
 Requires at least: 2.7
 Tested up to: 3.1
-Stable tag: 2.9.5
+Stable tag: 2.9.6
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -64,6 +64,9 @@ to the widget style to get a nice shadow down right of the container. This is no
 
 == Changelog ==
 
+= 2.9.6 =
+* German and Dutch translation added. Bugfix with Thumbnail for versions elder than 2.9
+
 = 2.9.5 =
 * Better working of the excerpt now. If there is no post thumbnail defined, the first picture of the post is taken as such.
 
@@ -86,3 +89,6 @@ to the widget style to get a nice shadow down right of the container. This is no
 
 = 2.9.5 =
 The excerpt function of the plugin works more accurate now and if there is no thumbnail, the first picture of the post is taken as such
+
+= 2.9.6 =
+German and Dutch translation added. Bugfix with Thumbnail for versions elder than 2.9
