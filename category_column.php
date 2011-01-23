@@ -2,8 +2,8 @@
 /*
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
-Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable.  You can choose the number of posts displayed, the offset (only your homepage or always) and whether or not a line is displayed between the posts. And mutch more.
-Version: 2.9.1
+Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets.  You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
+Version: 2.9.6
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -32,19 +32,13 @@ License: GPL3
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die("Sorry, you don't have direct access to this page."); }
 
 
-// import laguage files
-
-load_plugin_textdomain('category_column', false , basename(dirname(__FILE__)).'/languages');
-
-
-
 // extending the widget class
  
 class Category_Column_Widget extends WP_Widget {
  
  function Category_Column_Widget() {
 	 
-	 $widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', 'cc-widget') );
+	 $widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', 'category_column') );
 	 
 	 parent::WP_Widget(false, $name = 'Category Column', $widget_opts);
  }
@@ -72,61 +66,61 @@ function form($instance) {
  
 <p>
  <label for="<?php echo $this->get_field_id('title'); ?>">
- <?php _e('Title:'); ?>
+ <?php _e('Title:', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('list'); ?>">
- <?php _e("To exclude certain categories or to show just a special category, simply write their ID's separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):"); ?>
+ <?php _e('To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('list'); ?>" name="<?php echo $this->get_field_name('list'); ?>" type="text" value="<?php echo $list; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('postcount'); ?>">
- <?php _e('How many posts will be displayed in the sidebar:'); ?>
+ <?php _e('How many posts will be displayed in the sidebar:', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('postcount'); ?>" name="<?php echo $this->get_field_name('postcount'); ?>" type="text" value="<?php echo $postcount; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('offset'); ?>">
- <?php _e('Offset (how many posts are spared out in the beginning):'); ?>
+ <?php _e('Offset (how many posts are spared out in the beginning):', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('offset'); ?>" name="<?php echo $this->get_field_name('offset'); ?>" type="text" value="<?php echo $offset; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('homepage'); ?>">
- <?php _e('Check to have the offset only on your homepage:'); ?>
+ <?php _e('Check to have the offset only on your homepage:', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('homepage'); ?>" name="<?php echo $this->get_field_name('homepage'); ?>" <?php if(!empty($homepage)) {echo "checked=\"checked\""; } ?> type="checkbox" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('wordcount'); ?>">
- <?php _e('In case there is no excerpt defined, how many sentences are displayed:'); ?>
+ <?php _e('In case there is no excerpt defined, how many sentences are displayed:', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('wordcount'); ?>" name="<?php echo $this->get_field_name('wordcount'); ?>" type="text" value="<?php echo $wordcount; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('words'); ?>">
- <?php _e('Check to display words instead of sentences:'); ?>
+ <?php _e('Check to display words instead of sentences:', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('words'); ?>" name="<?php echo $this->get_field_name('words'); ?>" <?php if(!empty($words)) {echo "checked=\"checked\""; } ?> type="checkbox" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('line'); ?>">
- <?php _e('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):'); ?>
+ <?php _e('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('line'); ?>" name="<?php echo $this->get_field_name('line'); ?>" type="text" value="<?php echo $line; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('line_color'); ?>">
- <?php _e('The color of the line (e.g. #cccccc):'); ?>
+ <?php _e('The color of the line (e.g. #cccccc):', 'category_column'); ?>
  <input id="<?php echo $this->get_field_id('line_color'); ?>" name="<?php echo $this->get_field_name('line_color'); ?>" type="text" value="<?php echo $line_color; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('style'); ?>">
- <?php _e('Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget'); ?>
+ <?php _e('Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', 'category_column'); ?>
  <textarea id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>"><?php echo $style; ?></textarea>
  </label>
 </p>
@@ -205,7 +199,7 @@ if ($instance['list'] || $cc_cat) {
  
    setup_postdata($post);
    
-   if (has_post_thumbnail()) {
+   if (function_exists(the_post_thumbnail()) && has_post_thumbnail()) {
 	   
 /* If there is a picture, show thumbnail and headline */
 	   
@@ -220,6 +214,19 @@ if ($instance['list'] || $cc_cat) {
 }
 	   
 	   else {
+		   
+	   
+	   $fpw_thumb = '';
+	   
+	   ob_start();
+	   
+	   ob_end_clean();
+	   
+	   $fpw_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
+	   $fpw_thumb = $matches [1] [0];
+	   
+	   if (empty($fpw_thumb)) {	   
+		   
 		   
 /* If there is no picture, show headline and excerpt of the post */
 		   
@@ -249,9 +256,9 @@ if ($instance['list'] || $cc_cat) {
 		
 		else {
 			
-			$cc_short=array_slice(explode(". ", end ($cc_text)), 0, $instance['wordcount']-1);
+			$cc_short=array_slice(preg_split("/([\t.!?]+)/", end ($cc_text), -1, PREG_SPLIT_DELIM_CAPTURE), 0, $instance['wordcount']*2);
 			
-			$cc_excerpt=implode(". ", $cc_short).".";
+			$cc_excerpt=implode($cc_short);
 			
 		}
 	
@@ -260,6 +267,35 @@ if ($instance['list'] || $cc_cat) {
 	echo "<p>".$cc_excerpt."</p>";
 	
 	   }
+	   
+	else {
+		
+	   $fpw_image_title=$post->get_the_title;
+	   $fpw_size=getimagesize($fpw_thumb);
+	   
+	   if (($fpw_size[0]/$fpw_size[1])>1) {
+								   
+			$fpw_x=150;
+			$fpw_y=$fpw_size[1]/($fpw_size[0]/$fpw_x);
+			
+		}
+		
+		else {
+											   
+			$fpw_y=150;
+			$fpw_x=$fpw_size[0]/($fpw_size[1]/$fpw_y);
+			
+		}
+	   
+	   ?>
+       <a href="<?php the_permalink(); ?>">
+	   <?php echo "<img title=\"".$fpw_image_title."\" src=\"".$fpw_thumb."\" alt=\"".$fpw_image_title."\" width=\"".$fpw_x."\" height=\"".$fpw_y."\" />"; ?>
+       </a><p><a href="<?php the_permalink(); ?>">
+       <?php the_title(); ?>
+       </a></p>
+	   <?php
+	   
+	}}
 	   
 	if (!empty($instance['line']) && $i <  $instance['postcount']) {
 		
@@ -279,4 +315,10 @@ if ($instance['list'] || $cc_cat) {
 }
 
 add_action('widgets_init', create_function('', 'return register_widget("Category_Column_Widget");'));
+
+
+// import laguage files
+
+load_plugin_textdomain('category_column', false , basename(dirname(__FILE__)).'/languages');
+
 ?>
