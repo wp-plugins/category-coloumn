@@ -1,0 +1,61 @@
+# Copyright (C) 2010 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Caegory Column\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/category-coloumn\n"
+"POT-Creation-Date: 2011-01-13 00:01:08+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2011-01-18 13:33+0200\n"
+"Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
+"Language-Team: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: category_column.php:47
+msgid "Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars."
+msgstr "Bepaal de inhoud en het uiterlijk van de widget en laat daarna thumbnails en excerpten van posts in jouw sidebars zien."
+
+#: category_column.php:75
+msgid "Title:"
+msgstr "Titel:"
+
+#: category_column.php:81
+msgid "To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):"
+msgstr "Om bepaalde categorieën uit te sluiten of om juist een bepaalde categorie te laten zien, typ gewoon hun ID&#39;s gescheiden door een komma (bijv. <strong>-5,2,4</strong> zal categorieën 2 en 4 tonen en categorie 5 uitsluiten):"
+
+#: category_column.php:87
+msgid "How many posts will be displayed in the sidebar:"
+msgstr "Hoeveel posts zullen in de sidebar getoond worden:"
+
+#: category_column.php:93
+msgid "Offset (how many posts are spared out in the beginning):"
+msgstr "Offset (hoeveel posts zullen in het begin niet te zien zijn):"
+
+#: category_column.php:99
+msgid "Check to have the offset only on your homepage:"
+msgstr "Click hier, om de offset alleen maar op de startpagina te hebben:"
+
+#: category_column.php:105
+msgid "In case there is no excerpt defined, how many sentences are displayed:"
+msgstr "Hoeveel zinnen van de post zullen te zien zijn, als er geen excerpt gedefinieerd is:"
+
+#: category_column.php:111
+msgid "Check to display words instead of sentences:"
+msgstr "Click hier, om woorden in plaats van zinnen te tonen:"
+
+#: category_column.php:117
+msgid "If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):"
+msgstr "Als je een lijn tussen de posts wilt, is dit de hoogte in px (gewoon leeg laten, om geen lijn te hebben):"
+
+#: category_column.php:123
+msgid "The color of the line (e.g. #cccccc):"
+msgstr "De kleur van de lijn (bijv. #cccccc):"
+
+#: category_column.php:129
+msgid "Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget."
+msgstr "Hier bepaal je tenslotte de stijl van de widget. Typ gewoon iets als<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />om een zwarte gestreepte lijn aan de linker kant te hebben. Als je dit leeg laat, zal het theme de stijl van de widget bepalen."
+
