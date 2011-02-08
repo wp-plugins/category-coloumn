@@ -3,7 +3,7 @@
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
 Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets.  You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
-Version: 2.9.7
+Version: 2.9.8
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -216,16 +216,16 @@ if ($instance['list'] || $cc_cat) {
 	   else {
 		   
 	   
-	   $fpw_thumb = '';
+	   $cc_thumb = '';
 	   
-	   ob_start();
+	   #ob_start();
 	   
-	   ob_end_clean();
+	   #ob_end_clean();
 	   
-	   $fpw_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
-	   $fpw_thumb = $matches [1] [0];
+	   $cc_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
+	   $cc_thumb = $matches [1] [0];
 	   
-	   if (empty($fpw_thumb)) {	   
+	   if (empty($cc_thumb)) {	   
 		   
 		   
 /* If there is no picture, show headline and excerpt of the post */
@@ -270,26 +270,26 @@ if ($instance['list'] || $cc_cat) {
 	   
 	else {
 		
-	   $fpw_image_title=$post->get_the_title;
-	   $fpw_size=getimagesize($fpw_thumb);
+	   $cc_image_title=$post->get_the_title;
+	   $cc_size=getimagesize($fpw_thumb);
 	   
-	   if (($fpw_size[0]/$fpw_size[1])>1) {
+	   if (($cc_size[0]/$cc_size[1])>1) {
 								   
-			$fpw_x=150;
-			$fpw_y=$fpw_size[1]/($fpw_size[0]/$fpw_x);
+			$cc_x=150;
+			$cc_y=$fpw_size[1]/($cc_size[0]/$cc_x);
 			
 		}
 		
 		else {
 											   
-			$fpw_y=150;
-			$fpw_x=$fpw_size[0]/($fpw_size[1]/$fpw_y);
+			$cc_y=150;
+			$cc_x=$fpw_size[0]/($cc_size[1]/$cc_y);
 			
 		}
 	   
 	   ?>
        <a href="<?php the_permalink(); ?>">
-	   <?php echo "<img title=\"".$fpw_image_title."\" src=\"".$fpw_thumb."\" alt=\"".$fpw_image_title."\" width=\"".$fpw_x."\" height=\"".$fpw_y."\" />"; ?>
+	   <?php echo "<img title=\"".$cc_image_title."\" src=\"".$cc_thumb."\" alt=\"".$cc_image_title."\" width=\"".$cc_x."\" height=\"".$cc_y."\" />"; ?>
        </a><p><a href="<?php the_permalink(); ?>">
        <?php the_title(); ?>
        </a></p>

@@ -18,7 +18,7 @@ The Category Column was tested up to WP 3.1. It should work with versions down t
 
 == Installation ==
 
-1. Upload the `category-coloumn` folder to the `/wp-content/plugins/` directory (I know, I made a spellingmistake on submission) ;)
+1. Upload the `category-coloumn` folder to the `/wp-content/plugins/` directory;)
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Place and customize your widgets
 4. Ready
