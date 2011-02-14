@@ -1,10 +1,10 @@
 === Category Column ===
 Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q
-Tags: column, sidebar, widget, category, newspaper
+Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.7
 Tested up to: 3.1
-Stable tag: 2.9.7
+Stable tag: 3.0
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -18,7 +18,7 @@ The Category Column was tested up to WP 3.1. It should work with versions down t
 
 == Installation ==
 
-1. Upload the `category-coloumn` folder to the `/wp-content/plugins/` directory;)
+1. Upload the `category-coloumn` folder to the `/wp-content/plugins/` directory (I know, I made a spellingmistake on submission) ;)
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Place and customize your widgets
 4. Ready
@@ -64,6 +64,12 @@ to the widget style to get a nice shadow down right of the container. This is no
 
 == Changelog ==
 
+= 3.0 =
+* The offset is now increasing with paginaition on the frontpage of the blog
+
+= 2.9.8 =
+* Frontpage is taken instead of homepage now for more accurate working
+
 = 2.9.7 =
 * Small bugfix with Thumbnail
 
@@ -98,3 +104,9 @@ German and Dutch translation added. Bugfix with Thumbnail for versions elder tha
 
 = 2.9.7 =
 Small bugfix with Thumbnail
+
+= 2.9.8 =
+Frontpage is taken instead of homepage now for more accurate working
+
+= 3.0 =
+The offset is now increasing with paginaition on the frontpage of the blog

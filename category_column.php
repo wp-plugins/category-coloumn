@@ -3,7 +3,7 @@
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
 Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets.  You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
-Version: 2.9.8
+Version: 3.0
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -39,8 +39,9 @@ class Category_Column_Widget extends WP_Widget {
  function Category_Column_Widget() {
 	 
 	 $widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', 'category_column') );
+	 $control_opts = array( 'width' => 400 );
 	 
-	 parent::WP_Widget(false, $name = 'Category Column', $widget_opts);
+	 parent::WP_Widget(false, $name = 'Category Column', $widget_opts, $control_opts);
  }
  
 function form($instance) {
@@ -67,25 +68,25 @@ function form($instance) {
 <p>
  <label for="<?php echo $this->get_field_id('title'); ?>">
  <?php _e('Title:', 'category_column'); ?>
- <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+ <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('list'); ?>">
  <?php _e('To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):', 'category_column'); ?>
- <input id="<?php echo $this->get_field_id('list'); ?>" name="<?php echo $this->get_field_name('list'); ?>" type="text" value="<?php echo $list; ?>" />
+ <input class="widefat" id="<?php echo $this->get_field_id('list'); ?>" name="<?php echo $this->get_field_name('list'); ?>" type="text" value="<?php echo $list; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('postcount'); ?>">
  <?php _e('How many posts will be displayed in the sidebar:', 'category_column'); ?>
- <input id="<?php echo $this->get_field_id('postcount'); ?>" name="<?php echo $this->get_field_name('postcount'); ?>" type="text" value="<?php echo $postcount; ?>" />
+ <input class="widefat" id="<?php echo $this->get_field_id('postcount'); ?>" name="<?php echo $this->get_field_name('postcount'); ?>" type="text" value="<?php echo $postcount; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('offset'); ?>">
  <?php _e('Offset (how many posts are spared out in the beginning):', 'category_column'); ?>
- <input id="<?php echo $this->get_field_id('offset'); ?>" name="<?php echo $this->get_field_name('offset'); ?>" type="text" value="<?php echo $offset; ?>" />
+ <input class="widefat" id="<?php echo $this->get_field_id('offset'); ?>" name="<?php echo $this->get_field_name('offset'); ?>" type="text" value="<?php echo $offset; ?>" />
  </label>
 </p>
 <p>
@@ -97,7 +98,7 @@ function form($instance) {
 <p>
  <label for="<?php echo $this->get_field_id('wordcount'); ?>">
  <?php _e('In case there is no excerpt defined, how many sentences are displayed:', 'category_column'); ?>
- <input id="<?php echo $this->get_field_id('wordcount'); ?>" name="<?php echo $this->get_field_name('wordcount'); ?>" type="text" value="<?php echo $wordcount; ?>" />
+ <input class="widefat" id="<?php echo $this->get_field_id('wordcount'); ?>" name="<?php echo $this->get_field_name('wordcount'); ?>" type="text" value="<?php echo $wordcount; ?>" />
  </label>
 </p>
 <p>
@@ -109,19 +110,19 @@ function form($instance) {
 <p>
  <label for="<?php echo $this->get_field_id('line'); ?>">
  <?php _e('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):', 'category_column'); ?>
- <input id="<?php echo $this->get_field_id('line'); ?>" name="<?php echo $this->get_field_name('line'); ?>" type="text" value="<?php echo $line; ?>" />
+ <input class="widefat" id="<?php echo $this->get_field_id('line'); ?>" name="<?php echo $this->get_field_name('line'); ?>" type="text" value="<?php echo $line; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('line_color'); ?>">
  <?php _e('The color of the line (e.g. #cccccc):', 'category_column'); ?>
- <input id="<?php echo $this->get_field_id('line_color'); ?>" name="<?php echo $this->get_field_name('line_color'); ?>" type="text" value="<?php echo $line_color; ?>" />
+ <input class="widefat" id="<?php echo $this->get_field_id('line_color'); ?>" name="<?php echo $this->get_field_name('line_color'); ?>" type="text" value="<?php echo $line_color; ?>" />
  </label>
 </p>
 <p>
  <label for="<?php echo $this->get_field_id('style'); ?>">
  <?php _e('Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', 'category_column'); ?>
- <textarea id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>"><?php echo $style; ?></textarea>
+ <textarea class="widefat" id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>"><?php echo $style; ?></textarea>
  </label>
 </p>
 <?php
@@ -161,7 +162,9 @@ function widget($args, $instance) {
 	
 	else {
 		
-		$cc_before_widget="<div style=\"".$instance['style']."\">";
+		$style=str_replace(array("\r\n", "\n", "\r"), '', $instance['style']);
+		
+		$cc_before_widget="<div id=\"".$widget_id."\" style=\"".$style."\">";
 		$cc_after_widget="</div>";
 		
 	}
@@ -180,8 +183,20 @@ $i=1;
 
 $cc_setup="numberposts=".$instance['postcount'];
 
-if (is_home() || empty($instance['homepage'])) {
-	$cc_setup.='&offset='.$instance['offset'];
+if (is_front_page() || empty($instance['homepage'])) {
+	
+	global $wp_query;
+	
+	$cc_page = $wp_query->get( 'paged' );
+	$cc_numberposts = $wp_query->get( 'posts_per_page' );
+	
+	if ($cc_page) {
+		$cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset']; }
+		
+	else {
+		$cc_offset=$instance['offset']; }
+	
+	$cc_setup.='&offset='.$cc_offset;
 }
 
 if (is_category() && !$instance['list']) {
@@ -201,7 +216,7 @@ if ($instance['list'] || $cc_cat) {
    
    if (function_exists('has_post_thumbnail') && has_post_thumbnail()) {
 	   
-/* If there is a picture, show thumbnail and headline */
+/* If there is a thumbnail, show thumbnail and headline */
 	   
 	   ?>
        <a href="<?php the_permalink(); ?>">
@@ -218,14 +233,10 @@ if ($instance['list'] || $cc_cat) {
 	   
 	   $cc_thumb = '';
 	   
-	   #ob_start();
-	   
-	   #ob_end_clean();
-	   
 	   $cc_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
 	   $cc_thumb = $matches [1] [0];
 	   
-	   if (empty($cc_thumb)) {	   
+	  if (empty($cc_thumb)) {	   
 		   
 		   
 /* If there is no picture, show headline and excerpt of the post */
@@ -244,19 +255,19 @@ if ($instance['list'] || $cc_cat) {
 	
 	if (empty($cc_excerpt)) {
 		
-		$cc_text=explode('[/caption]', get_the_content());
+		$cc_text=preg_replace('/\[caption(.*?)\[\/caption\]/', '', get_the_content());
 		
 		if ($instance['words']) {
 			
-			$cc_short=array_slice(explode(" ", end ($cc_text)), 0, $instance['wordcount']);
+			$cc_short=array_slice(explode(" ", $cc_text), 0, $instance['wordcount']);
 			
-			$cc_excerpt=implode(" ", $cc_short)."...";
+			$cc_excerpt=implode(" ", $cc_short)." [...]";
 			
 		}
 		
 		else {
 			
-			$cc_short=array_slice(preg_split("/([\t.!?]+)/", end ($cc_text), -1, PREG_SPLIT_DELIM_CAPTURE), 0, $instance['wordcount']*2);
+			$cc_short=array_slice(preg_split("/([\t.!?]+)/", $cc_text, -1, PREG_SPLIT_DELIM_CAPTURE), 0, $instance['wordcount']*2);
 			
 			$cc_excerpt=implode($cc_short);
 			
@@ -271,19 +282,19 @@ if ($instance['list'] || $cc_cat) {
 	else {
 		
 	   $cc_image_title=$post->get_the_title;
-	   $cc_size=getimagesize($fpw_thumb);
+	   $cc_size=getimagesize($cc_thumb);
 	   
 	   if (($cc_size[0]/$cc_size[1])>1) {
 								   
 			$cc_x=150;
-			$cc_y=$fpw_size[1]/($cc_size[0]/$cc_x);
+			$cc_y=intval($cc_size[1]/($cc_size[0]/$cc_x));
 			
 		}
 		
 		else {
 											   
 			$cc_y=150;
-			$cc_x=$fpw_size[0]/($cc_size[1]/$cc_y);
+			$cc_x=intval($cc_size[0]/($cc_size[1]/$cc_y));
 			
 		}
 	   
