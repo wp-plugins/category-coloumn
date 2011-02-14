@@ -1,0 +1,53 @@
+# Copyright (C) 2010 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Post-Feature-Widget\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/post-feature-widget\n"
+"POT-Creation-Date: 2011-01-27 08:11:18+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2011-01-30 14:05+0200\n"
+"Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
+"Language-Team: Waldemar Stoffel <info@waldemarstoffel.com>\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: postfeature.php:62
+msgid "You can feature a certain post in this widget and display it, where and however you want, in your widget areas."
+msgstr "Mit diesem Widget kannst du einen Artikel deiner Wahl ins Highlight stellen."
+
+#: postfeature.php:85
+msgid "Title:"
+msgstr "Titel:"
+
+#: postfeature.php:91
+msgid "Give here the ID of the post, you want to appear in the widget:"
+msgstr "Gib hier die ID des Artikels an, der im Widget erscheinen soll:"
+
+#: postfeature.php:97
+msgid "Check to get the first image of the post as thumbnail."
+msgstr "Anklicken, wenn das erste Artikelbild als Thumbnail genommen werden soll."
+
+#: postfeature.php:103
+msgid "This is the width in px of the thumbnail (if choosing the first image):"
+msgstr "Hier bitte die Breite des Thumbnails in px eintragen (falls das erste Artikelbild genommen wird):"
+
+#: postfeature.php:109
+msgid "Check to <strong>not</strong> display the thumbnail of the post."
+msgstr "Anklicken, wenn <strong>kein</strong> Thumbnail gewünscht wird."
+
+#: postfeature.php:115
+msgid "Check to display the title of the post <strong>under</strong> the thumbnail (it is above by default)."
+msgstr "Anklicken, um den Titel <strong>unter</strong> dem Thumbnail zu haben (ist im Normalfall darüber)."
+
+#: postfeature.php:121
+msgid "If the excerpt of the post is not defined, by default the first 3 sentences of the post are showed. You can enter your own excerpt here, if you want."
+msgstr "Falls kein Auszug definiert ist, werden die ersten 3 Sätze des Artikels genommen. Hier kannst du einen eigenen Auszug eingeben."
+
+#: postfeature.php:127
+msgid "Here you can finally style the widget. Simply type something like<br /><strong>border: 2px solid;<br />border-color: #cccccc;<br />padding: 10px;</strong><br />to get just a gray outline and a padding of 10 px. If you leave that section empty, your theme will style the widget."
+msgstr "Hier kannst du das Widget stylen. Einfach etwas wie<br /><strong>border: 2px solid;<br />border-color: #cccccc;<br />padding: 10px;</strong><br />eingeben, um eine graue Außenlinie und einen inneren Abstand von 10 px zu erzeugen. Wenn dieses Feld leer bleibt, übernimmt dein Theme das Styling des Widgets."
+
