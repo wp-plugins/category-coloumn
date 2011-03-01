@@ -3,7 +3,7 @@
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
 Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets.  You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
-Version: 3.0
+Version: 3.1
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -55,7 +55,7 @@ function form($instance) {
 	$title = esc_attr($instance['title']);
 	$postcount = esc_attr($instance['postcount']);
 	$offset = esc_attr($instance['offset']);
-	$homepage = esc_attr($instance['homepage']);
+	$homepage = esc_attr($instance['home']);
 	$list = esc_attr($instance['list']);
 	$wordcount = esc_attr($instance['wordcount']);
 	$words = esc_attr($instance['words']);
@@ -136,7 +136,7 @@ function update($new_instance, $old_instance) {
 	 $instance['title'] = strip_tags($new_instance['title']);
 	 $instance['postcount'] = strip_tags($new_instance['postcount']);
 	 $instance['offset'] = strip_tags($new_instance['offset']);
-	 $instance['homepage'] = strip_tags($new_instance['homepage']);
+	 $instance['home'] = strip_tags($new_instance['home']);
 	 $instance['list'] = strip_tags($new_instance['list']); 
 	 $instance['wordcount'] = strip_tags($new_instance['wordcount']);
 	 $instance['words'] = strip_tags($new_instance['words']);
@@ -162,9 +162,9 @@ function widget($args, $instance) {
 	
 	else {
 		
-		$style=str_replace(array("\r\n", "\n", "\r"), '', $instance['style']);
+		$cc_style=str_replace(array("\r\n", "\n", "\r"), '', $instance['style']);
 		
-		$cc_before_widget="<div id=\"".$widget_id."\" style=\"".$style."\">";
+		$cc_before_widget="<div id=\"".$widget_id."\" style=\"".$cc_style."\">";
 		$cc_after_widget="</div>";
 		
 	}
@@ -183,7 +183,7 @@ $i=1;
 
 $cc_setup="numberposts=".$instance['postcount'];
 
-if (is_front_page() || empty($instance['homepage'])) {
+if (is_home() || empty($instance['home'])) {
 	
 	global $wp_query;
 	
@@ -207,6 +207,14 @@ if ($instance['list'] || $cc_cat) {
 	$cc_setup.='&cat='.$instance['list'].',-'.$cc_cat;
 }
 
+if (is_single()) {
+	
+	global $wp_query;
+	
+	$acc_post_id = $wp_query->get( 'p' );
+	$acc_setup.='&exclude='.$acc_post_id;
+	
+}
 
  global $post;
  $myposts = get_posts($cc_setup);
