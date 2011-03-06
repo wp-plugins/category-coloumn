@@ -3,7 +3,7 @@
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
 Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets.  You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
-Version: 3.1
+Version: 3.2
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -30,6 +30,23 @@ License: GPL3
 /* Stop direct call */
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die("Sorry, you don't have direct access to this page."); }
+
+
+//Additional links on the plugin page
+
+add_filter('plugin_row_meta', 'cc_register_links',10,2);
+
+function cc_register_links($links, $file) {
+	
+	$base = plugin_basename(__FILE__);
+	if ($file == $base) {
+		$links[] = '<a href="http://wordpress.org/extend/plugins/category-coloumn/faq/" target="_blank">'.__('FAQ','category_column').'</a>';
+		$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q" target="_blank">'.__('Donate','category_column').'</a>';
+	}
+	
+	return $links;
+
+}
 
 
 // extending the widget class
@@ -211,8 +228,7 @@ if (is_single()) {
 	
 	global $wp_query;
 	
-	$acc_post_id = $wp_query->get( 'p' );
-	$acc_setup.='&exclude='.$acc_post_id;
+	$cc_setup.='&exclude='.$wp_query->get_queried_object_id();
 	
 }
 

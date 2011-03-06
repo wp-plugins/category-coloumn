@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.7
 Tested up to: 3.2
-Stable tag: 3.1
+Stable tag: 3.2
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -64,6 +64,9 @@ to the widget style to get a nice shadow down right of the container. This is no
 
 == Changelog ==
 
+= 3.2 =
+* Bugfix concerning title slugs; settings accessible from plugin page now
+
 = 3.1 =
 * In case the sidebar containing the widget is displayed on single post pages, the post in the main column is not shown in the widget
 
@@ -117,3 +120,5 @@ The offset is now increasing with paginaition on the frontpage of the blog
 = 3.1 =
 In case the sidebar containing the widget is displayed on single post pages, the post in the main column is not shown in the widget
 
+= 3.2 =
+Bugfix concerning title slugs; settings accessible from plugin page now
