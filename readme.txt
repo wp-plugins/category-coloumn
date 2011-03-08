@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.7
 Tested up to: 3.2
-Stable tag: 3.2
+Stable tag: 3.5
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -14,7 +14,9 @@ The Category Column is mainly designed to give your blog a bit more of a newspap
 
 If there is a post thumbnail, it will be displayed above the headline of the post. No further text will appear. If there is no thumbnail, only the headline and the excerpt of the post will be shown. When the plugin can detect neither the thumbnail nor the excerpt of a post, it will display just the first couple of sentences (or words) of a post.
 
-The Category Column was tested up to WP 3.1. It should work with versions down to 2.7 but was never tested on those.
+The plugin makes now use of the 'TextAreaExpander plugin for jQuery' by Craig Buckler, Optimalworks.net to have a growing input field for the style.
+
+The Category Column was tested up to WP 3.2. It should work with versions down to 2.7 but was never tested on those.
 
 == Installation ==
 
@@ -24,6 +26,10 @@ The Category Column was tested up to WP 3.1. It should work with versions down t
 4. Ready
 
 == Frequently Asked Questions ==
+
+= I want the widget only on the homepage, but it show everywhere although I checked the 'only on homepage' box. =
+
+The 'only on homepage' box is about the offset (number of posts that are not shown). If you want the widget only to show on certain pages, you might want to try our '<a href="http://wordpress.org/extend/plugins/advanced-category-column/">Advanced Category Column</a>' plugin, which is more customizable.
 
 = I styled the widget container myself and it looks bad. What do I do? =
 
@@ -63,6 +69,9 @@ to the widget style to get a nice shadow down right of the container. This is no
 2. The widget's settings section
 
 == Changelog ==
+
+= 3.5 =
+* The style textarea is now resizable and the input fields got smaller
 
 = 3.2 =
 * Bugfix concerning title slugs; settings accessible from plugin page now
@@ -122,3 +131,6 @@ In case the sidebar containing the widget is displayed on single post pages, the
 
 = 3.2 =
 Bugfix concerning title slugs; settings accessible from plugin page now
+
+= 3.5 =
+The style textarea is now resizable and the input fields got smaller
