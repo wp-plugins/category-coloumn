@@ -2,8 +2,8 @@
 /*
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
-Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets.  You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
-Version: 3.5
+Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.4. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets.  You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
+Version: 3.6
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -259,6 +259,23 @@ if (is_single()) {
  
    setup_postdata($post);
    
+   $cc_args = array(
+		'post_type' => 'attachment',
+		'numberposts' => 1,
+		'post_status' => null,
+		'post_parent' => $post->ID
+	   );
+	   
+	   $cc_attachments = get_posts( $cc_args );
+	   
+	   if ( $cc_attachments ) {
+        foreach ( $cc_attachments as $attachment )
+		  $cc_image_alt = trim(strip_tags( get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true) ));
+		  $cc_image_title = trim(strip_tags( $attachment->post_title ));
+        }
+		
+	$cc_title_tag = __('Permalink to', 'category_column').' '.$post->post_title;   
+   
    if (function_exists('has_post_thumbnail') && has_post_thumbnail()) {
 	   
 /* If there is a thumbnail, show thumbnail and headline */
@@ -266,7 +283,7 @@ if (is_single()) {
 	   ?>
        <a href="<?php the_permalink(); ?>">
        <?php the_post_thumbnail(); ?>
-       </a><p><a href="<?php the_permalink(); ?>">
+       </a><br /><p><a href="<?php the_permalink(); ?>" title="<?php echo $cc_title_tag ?>">
        <?php the_title(); ?>
        </a></p>
        <?php 
@@ -278,7 +295,7 @@ if (is_single()) {
 	   
 	   $cc_thumb = '';
 	   
-	   $cc_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
+	   $cc_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', do_shortcode($post->post_content), $matches);
 	   $cc_thumb = $matches [1] [0];
 	   
 	  if (empty($cc_thumb)) {	   
@@ -288,7 +305,7 @@ if (is_single()) {
 		   
 	
 	?>
-    <p><a href="<?php the_permalink(); ?>">
+    <p><a href="<?php the_permalink(); ?>" title="<?php echo $cc_title_tag ?>">
     <?php the_title(); ?>
     </a></p>
     <?php
@@ -300,19 +317,19 @@ if (is_single()) {
 	
 	if (empty($cc_excerpt)) {
 		
-		$cc_text=preg_replace('/\[caption(.*?)\[\/caption\]/', '', get_the_content());
+		$cc_text=trim(preg_replace('/\s\s+/', ' ', str_replace(array("\r\n", "\n", "\r", "&nbsp;"), ' ', strip_tags(preg_replace('/\[caption(.*?)\[\/caption\]/', '', strip_shortcodes(get_the_content()))))));
 		
 		if ($instance['words']) {
 			
-			$cc_short=array_slice(explode(" ", $cc_text), 0, $instance['wordcount']);
+			$cc_short=array_slice(explode(' ', $cc_text), 0, $instance['wordcount']);
 			
-			$cc_excerpt=implode(" ", $cc_short)." [...]";
+			$cc_excerpt=implode(' ', $cc_short).' [&#8230;]';
 			
 		}
 		
 		else {
 			
-			$cc_short=array_slice(preg_split("/([\t.!?]+)/", $cc_text, -1, PREG_SPLIT_DELIM_CAPTURE), 0, $instance['wordcount']*2);
+			$cc_short=array_slice(preg_split('/([\t.!?]+)/', $cc_text, -1, PREG_SPLIT_DELIM_CAPTURE), 0, $instance['wordcount']*2);
 			
 			$cc_excerpt=implode($cc_short);
 			
@@ -320,13 +337,16 @@ if (is_single()) {
 	
 	}
 	
-	echo "<p>".$cc_excerpt."</p>";
+	echo '<p>'.$cc_excerpt.'</p>';
 	
 	   }
 	   
 	else {
 		
-	   $cc_image_title=$post->get_the_title;
+	   if (empty($cc_image_title)) $cc_image_title=$post->post_title;
+	   
+	   if (empty($cc_image_alt)) $cc_image_alt=$post->post_title;
+		
 	   $cc_size=getimagesize($cc_thumb);
 	   
 	   if (($cc_size[0]/$cc_size[1])>1) {
@@ -345,8 +365,8 @@ if (is_single()) {
 	   
 	   ?>
        <a href="<?php the_permalink(); ?>">
-	   <?php echo "<img title=\"".$cc_image_title."\" src=\"".$cc_thumb."\" alt=\"".$cc_image_title."\" width=\"".$cc_x."\" height=\"".$cc_y."\" />"; ?>
-       </a><p><a href="<?php the_permalink(); ?>">
+	   <?php echo '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" width="'.$cc_x.'" height="'.$cc_y.'" />'; ?>
+       </a><br /><p><a href="<?php the_permalink(); ?>" title="<?php echo $cc_title_tag ?>">
        <?php the_title(); ?>
        </a></p>
 	   <?php
@@ -355,7 +375,7 @@ if (is_single()) {
 	   
 	if (!empty($instance['line']) && $i <  $instance['postcount']) {
 		
-		echo "<hr style=\"color: ".$instance['line_color']."; background-color: ".$instance['line_color']."; height: ".$instance['line']."px;\" />";
+		echo '<hr style="color: '.$instance['line_color'].'; background-color: '.$instance['line_color'].'; height: '.$instance['line'].'px;" />';
 		
 		$i++;
 		
