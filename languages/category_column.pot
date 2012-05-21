@@ -1,0 +1,99 @@
+# Copyright (C) 2012 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/category-coloumn\n"
+"POT-Creation-Date: 2012-05-21 22:07:44+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2012-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: category_column.php:33
+msgid "Sorry, you don&#39;t have direct access to this page."
+msgstr ""
+
+#: category_column.php:55
+msgid "FAQ"
+msgstr ""
+
+#: category_column.php:56
+msgid "Donate"
+msgstr ""
+
+#: class-lib/A5_ImageClasses.php:28
+msgid "Permalink to"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:18
+msgid ""
+"Configure the output and looks of the widget. Then display thumbnails and "
+"excerpts of posts in your sidebars."
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:51
+msgid "Title:"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:57
+msgid ""
+"To exclude certain categories or to show just a special category, simply "
+"write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will "
+"show categories 2 and 4 and will exclude category 5):"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:63
+msgid "How many posts will be displayed in the sidebar:"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:69
+msgid "Offset (how many posts are spared out in the beginning):"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:75
+msgid "Check to have the offset only on your homepage."
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:80
+msgid ""
+"In case there is no excerpt defined, how many sentenses of the content are "
+"displayed:"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:86
+msgid "Check to have each sentense in a new line."
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:91
+msgid "Check to display words instead of sentenses:"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:96
+msgid ""
+"If you want a line between the posts, this is the height in px (if not "
+"wanting a line, leave emtpy):"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:102
+msgid "The color of the line (e.g. #cccccc):"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:111
+msgid ""
+"Check if you want to invert the Google AdSense Tags that are defined with "
+"the Ads Easy Plugin. E.g. when they are turned off for the sidebar, they "
+"will appear in the widget."
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:119
+msgid "Here you can finally style the widget. Simply type something like"
+msgstr ""
+
+#: class-lib/CC_WidgetClass.php:119
+msgid ""
+"to get just a dashed black line on the left. If you leave that section "
+"empty, your theme will style the widget."
+msgstr ""
