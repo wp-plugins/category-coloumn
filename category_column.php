@@ -7,9 +7,10 @@ Version: 3.6
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
+Text Domain: category_column
 */
 
-/*  Copyright 2010 - 2011  Waldemar Stoffel  (email : stoffel@atelier-fuenf.de)
+/*  Copyright 2010 - 2012  Waldemar Stoffel  (email : stoffel@atelier-fuenf.de)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,15 +30,14 @@ License: GPL3
 
 /* Stop direct call */
 
-if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die("Sorry, you don't have direct access to this page."); }
+if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) die(__('Sorry, you don&#39;t have direct access to this page.'));
 
-/* attach JavaScript file for textarea reszing */
-
-$cc_path = WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)).'/';
+/* attach JavaScript file for textarea resizing */
 
 function cc_js_sheet() {
-   global $cc_path;
-   wp_enqueue_script('ta-resize-script', $cc_path.'ta-expander.js', false, false, true);
+	
+	wp_enqueue_script('ta-expander-script', plugins_url('ta-expander.js', __FILE__), array('jquery'), '2.0', true);
+
 }
 
 add_action('admin_print_scripts-widgets.php', 'cc_js_sheet');
@@ -48,353 +48,28 @@ add_filter('plugin_row_meta', 'cc_register_links',10,2);
 
 function cc_register_links($links, $file) {
 	
+	global $cc_language_file;
+	
 	$base = plugin_basename(__FILE__);
 	if ($file == $base) {
-		$links[] = '<a href="http://wordpress.org/extend/plugins/category-coloumn/faq/" target="_blank">'.__('FAQ', 'category_column').'</a>';
-		$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q" target="_blank">'.__('Donate', 'category_column').'</a>';
+		$links[] = '<a href="http://wordpress.org/extend/plugins/category-coloumn/faq/" target="_blank">'.__('FAQ', $cc_language_file).'</a>';
+		$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q" target="_blank">'.__('Donate', $cc_language_file).'</a>';
 	}
 	
 	return $links;
 
 }
 
+define( 'CC_PATH', plugin_dir_path(__FILE__) );
 
-// extending the widget class
- 
-class Category_Column_Widget extends WP_Widget {
- 
- function Category_Column_Widget() {
-	 
-	 $widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', 'category_column') );
-	 $control_opts = array( 'width' => 400 );
-	 
-	 parent::WP_Widget(false, $name = 'Category Column', $widget_opts, $control_opts);
- }
- 
-function form($instance) {
-	
-	// setup some default settings
-    
-	$defaults = array( 'postcount' => 5, 'offset' => 3, 'homepage' => true, 'wordcount' => 3, 'line' => 1, 'line_color' => '#dddddd');
-    
-	$instance = wp_parse_args( (array) $instance, $defaults );
-	
-	$title = esc_attr($instance['title']);
-	$postcount = esc_attr($instance['postcount']);
-	$offset = esc_attr($instance['offset']);
-	$home = esc_attr($instance['home']);
-	$list = esc_attr($instance['list']);
-	$wordcount = esc_attr($instance['wordcount']);
-	$words = esc_attr($instance['words']);
-	$line=esc_attr($instance['line']);
-	$line_color=esc_attr($instance['line_color']);
-	$style=esc_attr($instance['style']);
-	
-	if (empty($style)) {
-		
-		$style_height=25;
-	
-	}
-	
-	else {
-		
-		$cc_elements=str_replace(array("\r\n", "\n", "\r"), '|', $style);
-		$style_height=count(explode('|', $cc_elements))*23;
-		
-	}
- 
- ?>
- 
-<p>
- <label for="<?php echo $this->get_field_id('title'); ?>">
- <?php _e('Title:', 'category_column'); ?>
- <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('list'); ?>">
- <?php _e('To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):', 'category_column'); ?>
- <input size="20" id="<?php echo $this->get_field_id('list'); ?>" name="<?php echo $this->get_field_name('list'); ?>" type="text" value="<?php echo $list; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('postcount'); ?>">
- <?php _e('How many posts will be displayed in the sidebar:', 'category_column'); ?>
- <input size="4" id="<?php echo $this->get_field_id('postcount'); ?>" name="<?php echo $this->get_field_name('postcount'); ?>" type="text" value="<?php echo $postcount; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('offset'); ?>">
- <?php _e('Offset (how many posts are spared out in the beginning):', 'category_column'); ?>
- <input size="4" id="<?php echo $this->get_field_id('offset'); ?>" name="<?php echo $this->get_field_name('offset'); ?>" type="text" value="<?php echo $offset; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('home'); ?>">
- <input id="<?php echo $this->get_field_id('home'); ?>" name="<?php echo $this->get_field_name('home'); ?>" <?php if(!empty($home)) {echo "checked=\"checked\""; } ?> type="checkbox" />&nbsp;<?php _e('Check to have the offset only on your homepage:', 'category_column'); ?>
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('wordcount'); ?>">
- <?php _e('In case there is no excerpt defined, how many sentences are displayed:', 'category_column'); ?>
- <input size="4" id="<?php echo $this->get_field_id('wordcount'); ?>" name="<?php echo $this->get_field_name('wordcount'); ?>" type="text" value="<?php echo $wordcount; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('words'); ?>">
- <input id="<?php echo $this->get_field_id('words'); ?>" name="<?php echo $this->get_field_name('words'); ?>" <?php if(!empty($words)) {echo "checked=\"checked\""; } ?> type="checkbox" />&nbsp;<?php _e('Check to display words instead of sentences:', 'category_column'); ?>
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('line'); ?>">
- <?php _e('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):', 'category_column'); ?>
- <input size="4" id="<?php echo $this->get_field_id('line'); ?>" name="<?php echo $this->get_field_name('line'); ?>" type="text" value="<?php echo $line; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('line_color'); ?>">
- <?php _e('The color of the line (e.g. #cccccc):', 'category_column'); ?>
- <input size="13" id="<?php echo $this->get_field_id('line_color'); ?>" name="<?php echo $this->get_field_name('line_color'); ?>" type="text" value="<?php echo $line_color; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('style'); ?>">
- <?php _e('Here you can finally style the widget. Simply type something like<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', 'category_column'); ?>
- <textarea class="widefat expand<?php echo $style_height; ?>-1000" id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>"><?php echo $style; ?></textarea>
- </label>
-</p>
-<?php
- }
- 
-
-function update($new_instance, $old_instance) {
-	 
-	 $instance = $old_instance;
-	 
-	 $instance['title'] = strip_tags($new_instance['title']);
-	 $instance['postcount'] = strip_tags($new_instance['postcount']);
-	 $instance['offset'] = strip_tags($new_instance['offset']);
-	 $instance['home'] = strip_tags($new_instance['home']);
-	 $instance['list'] = strip_tags($new_instance['list']); 
-	 $instance['wordcount'] = strip_tags($new_instance['wordcount']);
-	 $instance['words'] = strip_tags($new_instance['words']);
-	 $instance['line'] = strip_tags($new_instance['line']);
-	 $instance['line_color'] = strip_tags($new_instance['line_color']);
-	 $instance['style'] = strip_tags($new_instance['style']);
-	 
-	 return $instance;
-}
- 
-function widget($args, $instance) {
-	
-	extract( $args );
-	
-	$title = apply_filters('widget_title', $instance['title']);
-	
-	if (empty($instance['style'])) {
-		
-		$cc_before_widget=$before_widget;
-		$cc_after_widget=$after_widget;
-		
-	}
-	
-	else {
-		
-		$cc_style=str_replace(array("\r\n", "\n", "\r"), '', $instance['style']);
-		
-		$cc_before_widget="<div id=\"".$widget_id."\" style=\"".$cc_style."\">";
-		$cc_after_widget="</div>";
-		
-	}
-	
-	echo $cc_before_widget;
-	
-	if ( $title ) {
-		
-		echo $before_title . $title . $after_title;
-		
-	}
- 
-/* This is the actual function of the plugin, it fills the sidebar with the customized excerpts */
-
-$i=1;
-
-$cc_setup="numberposts=".$instance['postcount'];
-
-if (is_home() || empty($instance['home'])) {
-	
-	global $wp_query;
-	
-	$cc_page = $wp_query->get( 'paged' );
-	$cc_numberposts = $wp_query->get( 'posts_per_page' );
-	
-	if ($cc_page) {
-		$cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset']; }
-		
-	else {
-		$cc_offset=$instance['offset']; }
-	
-	$cc_setup.='&offset='.$cc_offset;
-}
-
-if (is_category() && !$instance['list']) {
-	$cc_cat=get_query_var('cat');
-}
-
-if ($instance['list'] || $cc_cat) {
-	$cc_setup.='&cat='.$instance['list'].',-'.$cc_cat;
-}
-
-if (is_single()) {
-	
-	global $wp_query;
-	
-	$cc_setup.='&exclude='.$wp_query->get_queried_object_id();
-	
-}
-
- global $post;
- $myposts = get_posts($cc_setup);
- foreach($myposts as $post) :
- 
-   setup_postdata($post);
-   
-   $cc_args = array(
-		'post_type' => 'attachment',
-		'numberposts' => 1,
-		'post_status' => null,
-		'post_parent' => $post->ID
-	   );
-	   
-	   $cc_attachments = get_posts( $cc_args );
-	   
-	   if ( $cc_attachments ) {
-        foreach ( $cc_attachments as $attachment )
-		  $cc_image_alt = trim(strip_tags( get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true) ));
-		  $cc_image_title = trim(strip_tags( $attachment->post_title ));
-        }
-		
-	$cc_title_tag = __('Permalink to', 'category_column').' '.$post->post_title;   
-   
-   if (function_exists('has_post_thumbnail') && has_post_thumbnail()) {
-	   
-/* If there is a thumbnail, show thumbnail and headline */
-	   
-	   ?>
-       <a href="<?php the_permalink(); ?>">
-       <?php the_post_thumbnail(); ?>
-       </a><br /><p><a href="<?php the_permalink(); ?>" title="<?php echo $cc_title_tag ?>">
-       <?php the_title(); ?>
-       </a></p>
-       <?php 
-
-}
-	   
-	   else {
-		   
-	   
-	   $cc_thumb = '';
-	   
-	   $cc_image = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', do_shortcode($post->post_content), $matches);
-	   $cc_thumb = $matches [1] [0];
-	   
-	  if (empty($cc_thumb)) {	   
-		   
-		   
-/* If there is no picture, show headline and excerpt of the post */
-		   
-	
-	?>
-    <p><a href="<?php the_permalink(); ?>" title="<?php echo $cc_title_tag ?>">
-    <?php the_title(); ?>
-    </a></p>
-    <?php
-
-
-	$cc_excerpt=$post->post_excerpt;
-	
-/* in case the excerpt is not definded by theme or anything else, the first x sentences of the content are given */
-	
-	if (empty($cc_excerpt)) {
-		
-		$cc_text=trim(preg_replace('/\s\s+/', ' ', str_replace(array("\r\n", "\n", "\r", "&nbsp;"), ' ', strip_tags(preg_replace('/\[caption(.*?)\[\/caption\]/', '', strip_shortcodes(get_the_content()))))));
-		
-		if ($instance['words']) {
-			
-			$cc_short=array_slice(explode(' ', $cc_text), 0, $instance['wordcount']);
-			
-			$cc_excerpt=implode(' ', $cc_short).' [&#8230;]';
-			
-		}
-		
-		else {
-			
-			$cc_short=array_slice(preg_split('/([\t.!?]+)/', $cc_text, -1, PREG_SPLIT_DELIM_CAPTURE), 0, $instance['wordcount']*2);
-			
-			$cc_excerpt=implode($cc_short);
-			
-		}
-	
-	}
-	
-	echo '<p>'.$cc_excerpt.'</p>';
-	
-	   }
-	   
-	else {
-		
-	   if (empty($cc_image_title)) $cc_image_title=$post->post_title;
-	   
-	   if (empty($cc_image_alt)) $cc_image_alt=$post->post_title;
-		
-	   $cc_size=getimagesize($cc_thumb);
-	   
-	   if (($cc_size[0]/$cc_size[1])>1) {
-								   
-			$cc_x=150;
-			$cc_y=intval($cc_size[1]/($cc_size[0]/$cc_x));
-			
-		}
-		
-		else {
-											   
-			$cc_y=150;
-			$cc_x=intval($cc_size[0]/($cc_size[1]/$cc_y));
-			
-		}
-	   
-	   ?>
-       <a href="<?php the_permalink(); ?>">
-	   <?php echo '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" width="'.$cc_x.'" height="'.$cc_y.'" />'; ?>
-       </a><br /><p><a href="<?php the_permalink(); ?>" title="<?php echo $cc_title_tag ?>">
-       <?php the_title(); ?>
-       </a></p>
-	   <?php
-	   
-	}}
-	   
-	if (!empty($instance['line']) && $i <  $instance['postcount']) {
-		
-		echo '<hr style="color: '.$instance['line_color'].'; background-color: '.$instance['line_color'].'; height: '.$instance['line'].'px;" />';
-		
-		$i++;
-		
-		}
-	
-	endforeach;
-
- 
- echo $cc_after_widget;
- 
- }
- 
-}
-
-add_action('widgets_init', create_function('', 'return register_widget("Category_Column_Widget");'));
-
+if (!class_exists('A5_Thumbnail')) require_once CC_PATH.'class-lib/A5_ImageClasses.php';
+if (!class_exists('A5_Excerpt')) require_once CC_PATH.'class-lib/A5_ExcerptClass.php';
+if (!class_exists('Category_Column_Widget')) require_once CC_PATH.'class-lib/CC_WidgetClass.php';
 
 // import laguage files
 
-load_plugin_textdomain('category_column', false , basename(dirname(__FILE__)).'/languages');
+$cc_language_file = 'category_column';
+
+load_plugin_textdomain($cc_language_file, false , basename(dirname(__FILE__)).'/languages');
 
 ?>
