@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.7
 Tested up to: 3.4
-Stable tag: 3.6
+Stable tag: 3.7
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -63,6 +63,11 @@ to the widget style to get a nice shadow down right of the container. This is no
 2. The widget's settings section
 
 == Changelog ==
+
+= 3.7 =
+
+* Complete overhaul of the code
+* Hooks into the [Ads Easy Plugin](http://wordpress.org/extend/plugins/adeasy) if Google AdSense Tags are in use
 
 = 3.6 =
 
@@ -137,3 +142,8 @@ The style textarea is now resizable and the input fields got smaller
 
 = 3.6 =
 Better excerpts and corract alt and title tags, fechting the thumbnails works now also with galleries
+
+= 3.7 =
+
+Complete overhaul of the code
+Hooks into the Ads Easy Plugin if Google AdSense Tags are in us
