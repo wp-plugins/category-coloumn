@@ -12,7 +12,7 @@ The Category Column does simply, what the name says; it will show excerpts of th
 
 The Category Column is mainly designed to give your blog a bit more of a newspaper behaviour. E.g. The plugin shows the latest posts from all categories with an offset of three posts (which are in the main column) on our homepage.
 
-If there is a post thumbnail, it will be displayed above the headline of the post. No further text will appear. If there is no thumbnail, only the headline and the excerpt of the post will be shown. When the plugin can detect neither the thumbnail nor the excerpt of a post, it will display just the first couple of sentences (or words) of a post.
+If there is a post thumbnail, it will be displayed above the headline of the post. No further text will appear. If there is no thumbnail, only the headline and the excerpt of the post will be shown. When the plugin can detect neither the thumbnail nor the excerpt of a post, it will display just the first couple of sentenses (or words) of a post.
 
 The Category Column was tested up to WP 3.4. It should work with versions down to 2.7 but was never tested on those.
 
