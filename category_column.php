@@ -130,14 +130,14 @@ const language_file = 'category_column';
 		
 		$cc_css_file=get_bloginfo('url').'/?ccfile=css';
 			
-		wp_register_style('advanced-cc', $cc_css_file, false, '3.8', 'all');
-		wp_enqueue_style('advanced-cc');
+		wp_register_style(self::language_file, $cc_css_file, false, '3.8', 'all');
+		wp_enqueue_style(self::language_file);
 		
 	}
 	
 	// writing dss file
 		
-	function acc_dss() {
+	function write_dss() {
 		
 		$eol = "\r\n";
 		$tab = "\t";
