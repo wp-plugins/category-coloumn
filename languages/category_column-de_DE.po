@@ -1,4 +1,4 @@
-# Copyright (C) 2012 
+# Copyright (C) 2013 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
@@ -8,82 +8,115 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2012-05-22 01:46+0200\n"
+"PO-Revision-Date: 2013-01-05 01:09+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 1.5.4\n"
 
-#: category_column.php:33
-msgid "Sorry, you don&#39;t have direct access to this page."
-msgstr "Sorry, du darfst diese Seite nicht direkt aufrufen."
-
-#: category_column.php:55
+#: category_column.php:82
 msgid "FAQ"
 msgstr "FAQ"
 
-#: category_column.php:56
+#: category_column.php:83
 msgid "Donate"
 msgstr "Spenden"
 
-#: class-lib/A5_ImageClasses.php:28
+#: class-lib/A5_ImageClass.php:40
 msgid "Permalink to"
 msgstr "Link zu:"
 
 #: class-lib/CC_WidgetClass.php:18
-msgid "Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars."
-msgstr "Konfiguriere Aussehen und Inhalt des Widgets, um Thumbnails und Auszüge von Posts in deiner Sidebar anzuzeigen."
+msgid ""
+"Configure the output and looks of the widget. Then display thumbnails and "
+"excerpts of posts in your sidebars."
+msgstr ""
+"Konfiguriere Aussehen und Inhalt des Widgets, um Thumbnails und Auszüge von "
+"Posts in deiner Sidebar anzuzeigen."
 
-#: class-lib/CC_WidgetClass.php:51
+#: class-lib/CC_WidgetClass.php:54
 msgid "Title:"
 msgstr "Titel:"
 
-#: class-lib/CC_WidgetClass.php:57
-msgid "To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):"
-msgstr "Um bestimmte Kategorien auszuschließen oder nur eine bestimmte Kategorie anzuzeigen, einfach die ID&#39;s in eine kommagetrennte Liste schreiben (z.B. <strong>-5,2,4</strong> wird Kategorie 2 und 4 anzeigen und Kategorie 5 ausschließen):"
+#: class-lib/CC_WidgetClass.php:55
+msgid ""
+"To exclude certain categories or to show just a special category, simply "
+"write their ID&#39;s separated by comma (e.g. %s-5, 2, 4%s will show "
+"categories 2 and 4 and will exclude category 5):"
+msgstr ""
+"Um bestimmte Kategorien auszuschließen oder nur eine bestimmte Kategorie "
+"anzuzeigen, einfach die ID&#39;s in eine kommagetrennte Liste schreiben (z."
+"B. %s-5,2,4%s wird Kategorie 2 und 4 anzeigen und Kategorie 5 ausschließen):"
 
-#: class-lib/CC_WidgetClass.php:63
+#: class-lib/CC_WidgetClass.php:56
+msgid "Check to show the categories in which the post is filed."
+msgstr ""
+"Anklicken, um die Kategorien, in denen der Artikel publiziert ist, "
+"anzuzeigen."
+
+#: class-lib/CC_WidgetClass.php:57
+msgid ""
+"Give some text that you want in front of the post&#39;s categtories (i.e "
+"&#39;filed under&#39;:"
+msgstr ""
+"Gib hier den Text ein, den du vor den Artikelkategorien haben willst (z.B. "
+"&#39;abgelegt in&#39;:"
+
+#: class-lib/CC_WidgetClass.php:58
 msgid "How many posts will be displayed in the sidebar:"
 msgstr "Wie viele Posts sollen in der Sidebar angezeigt werden:"
 
-#: class-lib/CC_WidgetClass.php:69
+#: class-lib/CC_WidgetClass.php:59
 msgid "Offset (how many posts are spared out in the beginning):"
 msgstr "Offset (wie viele Posts werden am Anfang übersprungen):"
 
-#: class-lib/CC_WidgetClass.php:75
+#: class-lib/CC_WidgetClass.php:60
 msgid "Check to have the offset only on your homepage."
 msgstr "Anklicken, um den Offset nur auf der Homepage zu haben."
 
-#: class-lib/CC_WidgetClass.php:80
-msgid "In case there is no excerpt defined, how many sentenses of the content are displayed:"
-msgstr "Wie viele Sätze des Posts sollen angezeigt werden, falls kein Auszug definiert ist:"
+#: class-lib/CC_WidgetClass.php:61
+msgid "Width of the thumbnail (in px):"
+msgstr "Breite des Thumbnails (in px):"
 
-#: class-lib/CC_WidgetClass.php:86
+#: class-lib/CC_WidgetClass.php:62
+msgid "Weight of the Post Title:"
+msgstr "Gewicht der Überschrift:"
+
+#: class-lib/CC_WidgetClass.php:63
+msgid "In case there is no excerpt defined, how many sentences are displayed:"
+msgstr ""
+"Wie viele Sätze des Posts sollen angezeigt werden, falls kein Auszug "
+"definiert ist:"
+
+#: class-lib/CC_WidgetClass.php:64
+msgid "Check to display words instead of sentences."
+msgstr "Anklicken, wenn Wörter statt Sätze angezeigt werden sollen:"
+
+#: class-lib/CC_WidgetClass.php:65
 msgid "Check to have each sentense in a new line."
 msgstr "Anklicken, um jeden Satz in einer neuen Zeile zu haben."
 
-#: class-lib/CC_WidgetClass.php:91
-msgid "Check to display words instead of sentenses:"
-msgstr "Anklicken, wenn Wörter statt Sätze angezeigt werden sollen:"
+#: class-lib/CC_WidgetClass.php:66
+msgid ""
+"If you want a line between the posts, this is the height in px (if not "
+"wanting a line, leave emtpy):"
+msgstr ""
+"Wenn eine Trennlinie zwischen den Posts sein soll, ist dies die Höhe der "
+"Linie in px (einfach leer lassen, wenn keine Linie gewünscht wird):"
 
-#: class-lib/CC_WidgetClass.php:96
-msgid "If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):"
-msgstr "Wenn eine Trennlinie zwischen den Posts sein soll, ist dies die Höhe der Linie in px (einfach leer lassen, wenn keine Linie gewünscht wird):"
-
-#: class-lib/CC_WidgetClass.php:102
+#: class-lib/CC_WidgetClass.php:67
 msgid "The color of the line (e.g. #cccccc):"
 msgstr "Die Farbe der Trennlinie (z.B. #cccccc):"
 
-#: class-lib/CC_WidgetClass.php:111
-msgid "Check if you want to invert the Google AdSense Tags that are defined with the Ads Easy Plugin. E.g. when they are turned off for the sidebar, they will appear in the widget."
-msgstr "Anklicken, wenn du die Google Adsense Tags umkehren willst, die im Ads Easy Plugin definiert wurden. Z.b. wenn sie für die Sidebar deaktiviert wurden, werden sie im Widget aktiv."
-
-#: class-lib/CC_WidgetClass.php:119
-msgid "Here you can finally style the widget. Simply type something like"
-msgstr "Here you can finally style the widget. Simply type something like"
-
-#: class-lib/CC_WidgetClass.php:119
-msgid "to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget."
-msgstr "eintragen, um eine schwarze gestrichelte Linie am linken Rand zu bekommen. Wenn dieses Feld leer bleibt, übernimmt das Theme das Styling des Widgets."
-
+#: class-lib/CC_WidgetClass.php:68
+msgid ""
+"Here you can finally style the widget. Simply type something like%1$s"
+"%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$sto get just a "
+"dashed black line on the left. If you leave that section empty, your theme "
+"will style the widget."
+msgstr ""
+"Hier kannst du schließlich das Widget stylen. Einfach etwas wie%1$s"
+"%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$seintragen, um "
+"eine schwarze gestrichelte Linie am linken Rand zu bekommen. Wenn dieses "
+"Feld leer bleibt, übernimmt das Theme das Styling des Widgets."

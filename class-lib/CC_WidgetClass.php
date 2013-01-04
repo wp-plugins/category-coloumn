@@ -10,12 +10,12 @@
  *
  */
 class Category_Column_Widget extends WP_Widget {
+	
+const language_file = 'category_column';
  
 function Category_Column_Widget() {
 
-	global $cc_language_file;
-	
-	$widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', $cc_language_file) );
+	$widget_opts = array( 'description' => __('Configure the output and looks of the widget. Then display thumbnails and excerpts of posts in your sidebars.', self::language_file) );
 	$control_opts = array( 'width' => 400 );
 	
 	parent::WP_Widget(false, $name = 'Category Column', $widget_opts, $control_opts);
@@ -24,11 +24,9 @@ function Category_Column_Widget() {
  
 function form($instance) {
 	
-	global $cc_language_file;
-	
 	// setup some default settings
 	
-	$defaults = array( 'postcount' => 5, 'offset' => 3, 'homepage' => true, 'wordcount' => 3, 'line' => 1, 'line_color' => '#dddddd');
+	$defaults = array( 'postcount' => 5, 'offset' => 3, 'home' => 1, 'wordcount' => 3, 'line' => 1, 'line_color' => '#dddddd', 'h' => 3);
 	
 	$instance = wp_parse_args( (array) $instance, $defaults );
 	
@@ -37,95 +35,39 @@ function form($instance) {
 	$offset = esc_attr($instance['offset']);
 	$home = esc_attr($instance['home']);
 	$list = esc_attr($instance['list']);
-	$adsense = esc_attr($instance['adsense']);
-	$linespace = esc_attr($instance['linespace']);
+	$showcat = esc_attr($instance['showcat']);
+	$showcat_txt = esc_attr($instance['showcat_txt']);
 	$wordcount = esc_attr($instance['wordcount']);
+	$linespace = esc_attr($instance['linespace']);
+	$width = esc_attr($instance['width']);
 	$words = esc_attr($instance['words']);
 	$line=esc_attr($instance['line']);
 	$line_color=esc_attr($instance['line_color']);
 	$style=esc_attr($instance['style']);
+	$h = esc_attr($instance['h']);
+	
+	$base_id = 'widget-'.$this->id_base.'-'.$this->number.'-';
+	$base_name = 'widget-'.$this->id_base.'['.$this->number.']';
+	
+	$headings = array(array('1', 'h1'), array('2', 'h2'), array('3', 'h3'), array('4', 'h4'), array('5', 'h5'), array('6', 'h6'));
+	
+	a5_text_field($base_id.'title', $base_name.'[title]', $title, __('Title:', self::language_file), array('space' => true, 'class' => 'widefat'));
+	a5_text_field($base_id.'list', $base_name.'[list]', $list, sprintf(__('To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. %s-5, 2, 4%s will show categories 2 and 4 and will exclude category 5):', self::language_file), '<strong>', '</strong>'), array('space' => true, 'class' => 'widefat'));
+	a5_checkbox($base_id.'showcat', $base_name.'[showcat]', $showcat, __('Check to show the categories in which the post is filed.', self::language_file), array('space' => true));
+	a5_text_field($base_id.'showcat_txt', $base_name.'[showcat_txt]', $showcat_txt, __('Give some text that you want in front of the post&#39;s categtories (i.e &#39;filed under&#39;:', self::language_file), array('space' => true, 'class' => 'widefat'));
+	a5_number_field($base_id.'postcount', $base_name.'[postcount]', $postcount, __('How many posts will be displayed in the sidebar:', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
+	a5_number_field($base_id.'offset', $base_name.'[offset]', $offset, __('Offset (how many posts are spared out in the beginning):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
+	a5_checkbox($base_id.'home', $base_name.'[home]', $home, __('Check to have the offset only on your homepage.', self::language_file), array('space' => true));
+	a5_number_field($base_id.'width', $base_name.'[width]', $width, __('Width of the thumbnail (in px):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
+	a5_select($base_id.'h', $base_name.'[h]', $headings, $h, __('Weight of the Post Title:', self::language_file), false, array('space' => true));
+	a5_number_field($base_id.'wordcount', $base_name.'[wordcount]', $wordcount, __('In case there is no excerpt defined, how many sentences are displayed:', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
+	a5_checkbox($base_id.'words', $base_name.'[words]', $words, __('Check to display words instead of sentences.', self::language_file), array('space' => true));
+	a5_checkbox($base_id.'linespace', $base_name.'[linespace]', $linespace, __('Check to have each sentense in a new line.', self::language_file), array('space' => true));
+	a5_number_field($base_id.'line', $base_name.'[line]', $line, __('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
+	a5_color_field($base_id.'line_color', $base_name.'[line_color]', $line_color, __('The color of the line (e.g. #cccccc):', self::language_file), array('space' => true, 'size' => 13));
+	a5_textarea($base_id.'style', $base_name.'[style]', $style, sprintf(__('Here you can finally style the widget. Simply type something like%1$s%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$sto get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', self::language_file), '<strong>', '<br />', '</strong>'), array('space' => true, 'class' => 'widefat', 'style' => 'height: 60px;'));
+	a5_resize_textarea(array($base_id.'style'), true);
 
-?>
-<p>
- <label for="<?php echo $this->get_field_id('title'); ?>">
- <?php _e('Title:', $cc_language_file); ?>
- <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('list'); ?>">
- <?php _e('To exclude certain categories or to show just a special category, simply write their ID&#39;s separated by comma (e.g. <strong>-5,2,4</strong> will show categories 2 and 4 and will exclude category 5):', $cc_language_file); ?>
- <input size="20" id="<?php echo $this->get_field_id('list'); ?>" name="<?php echo $this->get_field_name('list'); ?>" type="text" value="<?php echo $list; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('postcount'); ?>">
- <?php _e('How many posts will be displayed in the sidebar:', $cc_language_file); ?>
- <input size="4" id="<?php echo $this->get_field_id('postcount'); ?>" name="<?php echo $this->get_field_name('postcount'); ?>" type="text" value="<?php echo $postcount; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('offset'); ?>">
- <?php _e('Offset (how many posts are spared out in the beginning):', $cc_language_file); ?>
- <input size="4" id="<?php echo $this->get_field_id('offset'); ?>" name="<?php echo $this->get_field_name('offset'); ?>" type="text" value="<?php echo $offset; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('home'); ?>">
- <input id="<?php echo $this->get_field_id('home'); ?>" name="<?php echo $this->get_field_name('home'); ?>" <?php if($home) echo 'checked="checked"' ?> type="checkbox" />&nbsp;<?php _e('Check to have the offset only on your homepage.', $cc_language_file); ?>
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('wordcount'); ?>">
- <?php _e('In case there is no excerpt defined, how many sentenses of the content are displayed:', $cc_language_file); ?>
- <input size="4" id="<?php echo $this->get_field_id('wordcount'); ?>" name="<?php echo $this->get_field_name('wordcount'); ?>" type="text" value="<?php echo $wordcount; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('linespace'); ?>">
- <input id="<?php echo $this->get_field_id('linespace'); ?>" name="<?php echo $this->get_field_name('linespace'); ?>" <?php if($linespace) echo 'checked="checked"'; ?> type="checkbox" />&nbsp;<?php _e('Check to have each sentense in a new line.', $cc_language_file); ?>
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('words'); ?>">
- <input id="<?php echo $this->get_field_id('words'); ?>" name="<?php echo $this->get_field_name('words'); ?>" <?php if($words) echo 'checked="checked"'; ?> type="checkbox" />&nbsp;<?php _e('Check to display words instead of sentences:', $cc_language_file); ?>
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('line'); ?>">
- <?php _e('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):', $cc_language_file); ?>
- <input size="4" id="<?php echo $this->get_field_id('line'); ?>" name="<?php echo $this->get_field_name('line'); ?>" type="text" value="<?php echo $line; ?>" />
- </label>
-</p>
-<p>
- <label for="<?php echo $this->get_field_id('line_color'); ?>">
- <?php _e('The color of the line (e.g. #cccccc):', $cc_language_file); ?>
- <input size="13" id="<?php echo $this->get_field_id('line_color'); ?>" name="<?php echo $this->get_field_name('line_color'); ?>" type="text" value="<?php echo $line_color; ?>" />
- </label>
-</p>
-<?php
-if (defined('AE_AD_TAGS') && AE_AD_TAGS==1) :
-?>
-<p>
- <label for="<?php echo $this->get_field_id('adsense'); ?>">
- <input id="<?php echo $this->get_field_id('adsense'); ?>" name="<?php echo $this->get_field_name('adsense'); ?>" <?php if($adsense) echo 'checked="checked"'; ?> type="checkbox" />&nbsp;<?php _e('Check if you want to invert the Google AdSense Tags that are defined with the Ads Easy Plugin. E.g. when they are turned off for the sidebar, they will appear in the widget.', $cc_language_file); ?>
- </label>
-</p>
-<?php
-endif;
-?>
-<p>
- <label for="<?php echo $this->get_field_id('style'); ?>">
- <?php echo __('Here you can finally style the widget. Simply type something like', $cc_language_file).'<br /><strong>border-left: 1px dashed;<br />border-color: #000000;</strong><br />'.__('to get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', $cc_language_file); ?>
- <textarea class="widefat" id="<?php echo $this->get_field_id('style'); ?>" name="<?php echo $this->get_field_name('style'); ?>"><?php echo $style; ?></textarea>
- </label>
-</p>
-<script type="text/javascript"><!--
-jQuery(document).ready(function() {
-	jQuery("#<?php echo $this->get_field_id('style'); ?>").autoResize();
-});
---></script>
-<?php
 } // form
 
 function update($new_instance, $old_instance) {
@@ -136,14 +78,18 @@ function update($new_instance, $old_instance) {
 	$instance['postcount'] = strip_tags($new_instance['postcount']);
 	$instance['offset'] = strip_tags($new_instance['offset']);
 	$instance['home'] = strip_tags($new_instance['home']);
-	$instance['list'] = strip_tags($new_instance['list']); 
+	$instance['list'] = strip_tags($new_instance['list']);
+	$instance['showcat'] = strip_tags($new_instance['showcat']);
+	$instance['showcat_txt'] = strip_tags($new_instance['showcat_txt']); 	
 	$instance['wordcount'] = strip_tags($new_instance['wordcount']);
+	$instance['width'] = strip_tags($new_instance['width']);
 	$instance['words'] = strip_tags($new_instance['words']);
 	$instance['adsense'] = strip_tags($new_instance['adsense']);
 	$instance['linespace'] = strip_tags($new_instance['linespace']);
 	$instance['line'] = strip_tags($new_instance['line']);
 	$instance['line_color'] = strip_tags($new_instance['line_color']);
 	$instance['style'] = strip_tags($new_instance['style']);
+	$instance['h'] = strip_tags($new_instance['h']);
 	
 	return $instance;
 
@@ -169,163 +115,198 @@ function widget($args, $instance) {
 	
 	endif;
 	
-	// hooking into ads easy for the google tags
-	
-	if (AE_AD_TAGS == 1 && $instance['adsense']) :
-		
-		do_action('google_end_tag');
-		
-		if ($ae_options['ae_sidebar']==1) do_action('google_ignore_tag');
-	
-		else do_action('google_start_tag');
-		
-	endif;	
-	
 	echo $cc_before_widget;
 	
 	if ( $title ) echo $before_title . $title . $after_title;
  
-/* This is the actual function of the plugin, it fills the sidebar with the customized excerpts */
-
-$i=1;
-
-$cc_setup="numberposts=".$instance['postcount'];
-
-if (is_home() || empty($instance['home'])) :
+	/* This is the actual function of the plugin, it fills the sidebar with the customized excerpts */
 	
-	global $wp_query;
+	$i=1;
 	
-	$cc_page = $wp_query->get( 'paged' );
-	$cc_numberposts = $wp_query->get( 'posts_per_page' );
+	$cc_setup="posts_per_page=".$instance['postcount'];
 	
-	if ($cc_page) $cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset'];
+	if (is_home() || empty($instance['home'])) :
 		
-	else $cc_offset=$instance['offset'];
-	
-	$cc_setup.='&offset='.$cc_offset;
-
-endif;
-
-if (is_category() && !$instance['list']) $cc_cat=get_query_var('cat');
-
-if ($instance['list'] || $cc_cat) $cc_setup.='&cat='.$instance['list'].',-'.$cc_cat;
-
-if (is_single()) :
-	
-	global $wp_query;
-	
-	$cc_setup.='&exclude='.$wp_query->get_queried_object_id();
-	
-endif;
-
-global $post;
-
-$cc_posts = get_posts($cc_setup);
-
-foreach($cc_posts as $post) :
-
- 	$imagetags = new A5_ImageTags;
-	
-	$cc_tags = $imagetags->get_tags($post, $cc_language_file);
-	
-	$cc_image_alt = $cc_tags['image_alt'];
-	$cc_image_title = $cc_tags['image_title'];
-	$cc_title_tag = $cc_tags['title_tag'];
-	
-	$eol = "\r\n";
-	$cc_headline = '<p>'.$eol.'<a href="'.get_permalink().'" title="'.$cc_title_tag.'">'.get_the_title().'</a>'.$eol.'</p>';
-	
-	if (function_exists('has_post_thumbnail') && has_post_thumbnail()) :
-	
-	/* If there is a thumbnail, show thumbnail and headline */
-	   
-	echo '<a href="'.get_permalink().'">'.get_the_post_thumbnail().'</a>'.$eol.'<div style="clear: both;"></div>'.$eol.$cc_headline;
-
-	else :
-	
-		$args = array (
-		'content' => $post->post_content,
-		'width' => get_option('thumbnail_size_w'),
-		'height' => get_option('thumbnail_size_h')
-		);
-		   
-		$cc_image = new A5_Thumbnail;
-	
-	   	$cc_image_info = $cc_image->get_thumbnail($args);
+		global $wp_query;
 		
-		$cc_thumb = $cc_image_info['thumb'];
+		$cc_page = $wp_query->get( 'paged' );
+		$cc_numberposts = $wp_query->get( 'posts_per_page' );
 		
-		$cc_width = $cc_image_info['thumb_width'];
-
-		$cc_height = $cc_image_info['thumb_height'];	
-	
-		if (!empty($cc_thumb)) :
-		
-			if ($cc_width) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" width="'.$cc_width.'" height="'.$cc_height.'" />';
-				
-			else $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" style="maxwidth: '.get_option('thumbnail_size_w').'; maxheight: '.get_option('thumbnail_size_h').';" />';
+		if ($cc_page) $cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset'];
 			
-			?>
-			<a href="<?php the_permalink(); ?>"> <?php echo $cc_img; ?></a>
-            <div style="clear:both;"></div>
-			<p><a href="<?php the_permalink(); ?>" title="<?php echo $cc_title_tag ?>"><?php the_title(); ?></a></p>
-			<?php
+		else $cc_offset=$instance['offset'];
+		
+		$cc_setup.='&offset='.$cc_offset;
+	
+	endif;
+	
+	if (is_category() && !$instance['list']) $cc_cat=get_query_var('cat');
+	
+	if ($instance['list'] || $cc_cat) $cc_setup.='&cat='.$instance['list'].',-'.$cc_cat;
+	
+	if (is_single()) :
+		
+		global $wp_query;
+		
+		$cc_setup.='&exclude='.$wp_query->get_queried_object_id();
+		
+	endif;
+	
+	global $post;
+	
+	$cc_posts = new WP_Query($cc_setup);
+	
+	while($cc_posts->have_posts()) :
+		
+		$cc_posts->the_post();
+	
+		if ($instance['showcat']) :
+		
+			$post_categories = wp_get_post_categories( $post->ID);
+			
+			$cats = array();
+		
+			foreach($post_categories as $c) :
+			
+				$cat = get_category( $c );
+			
+				$cats[] = $eol.'<a href="'.get_category_link( $c ).'" title="'.$cat->name.'">'.$cat->name.'</a>';
+			
+			endforeach;
+			
+			$post_byline = ($instance['showcat_txt']) ? $eol.'<p id="acc_byline-'.$widget_id.'-'.$count.'">'.$eol.$instance['showcat_txt'].' ' : $eol.'<p id="acc_byline-'.$widget_id.'-'.$count.'">';
+			
+			$post_byline .= implode(', ', $cats);
+		
+			$post_byline .= $eol.'</p>'.$eol;
+		
+			echo $post_byline;
+		
+		endif;
+	
+		$cc_tags = A5_Image::tags($post, 'cc_options', self::language_file);
+		
+		$cc_image_alt = $cc_tags['image_alt'];
+		$cc_image_title = $cc_tags['image_title'];
+		$cc_title_tag = $cc_tags['title_tag'];
+		
+		$eol = "\r\n";
+		$cc_headline = '<h'.$instance['h'].'>'.$eol.'<a href="'.get_permalink().'" title="'.$cc_title_tag.'">'.get_the_title().'</a>'.$eol.'</h'.$instance['h'].'>';
+		
+		// get thumbnail
+			
+		if (!$instance['width']) :
+		
+			$width = get_option('thumbnail_size_w');
+			
+			if (!empty($width)) $width = 150;
+			
+			$height = get_option('thumbnail_size_h');
+			
+			if (!empty($height)) :
+			
+				$height = 150;
+				
+			endif;
+			
+		else : 
+		
+			$width = $instance['width'];
+			
+			$height = false;
+			
+			if (has_post_thumbnail()) :
+			
+				$img_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'large');
+					
+				$source = $img_url[0];
+				
+			endif;
+		
+		endif;
+		
+		if (has_post_thumbnail() && !$instance['width']) :
+		
+			$cc_img = get_the_post_thumbnail($post->ID, 'thumbnail');
 			
 		else :
+		
+			$args = array (
+			'thumb' => $source,
+			'content' => $post->post_content,
+			'width' => $width,
+			'height' => $height, 
+			'option' => 'cc_options'
+			);	
+		   
+			$image_info = A5_Image::thumbnail($args);
 			
+			$cc_thumb = $image_info['thumb'];
+			
+			$cc_width = $image_info['thumb_width'];
+	
+			$cc_height = $image_info['thumb_height'];
+			
+			if ($cc_thumb) :
+			
+				if ($cc_width) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" height="'.$cc_height.'" />';
+					
+				else $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" style="maxwidth: '.$width.'; maxheight: '.$height.';" />';
+				
+			endif;
+			
+		endif;
+				
+		if ($cc_img) :
+			
+			echo '<a href="'.get_permalink().'">'.$cc_img.'</a>'.$eol.'<div style="clear: both;"></div>'.$eol.$cc_headline;
+	
+		else :
+				
 			/* If there is no picture, show headline and excerpt of the post */
 			
 			echo $cc_headline;
 			
 			/* in case the excerpt is not definded by theme or anything else, the first x sentences of the content are given */
 			
-			$type = (empty($instance['words'])) ? 'sentenses' : 'words';
+			$type = (empty($instance['words'])) ? 'sentences' : 'words';
 				
 			$args = array(
 			'excerpt' => $post->post_excerpt,
 			'content' => $post->post_content,
 			'type' => $type,
 			'count' => $instance['wordcount'],
-			'linespace' => $instance['linespace']
+			'linespace' => $instance['linespace'],
+			'filter' => true
 			);
-	
-			$cc_excerpt = new A5_Excerpt;
 			
-			$cc_text = $cc_excerpt->get_excerpt($args);
-
-			echo '<p>'.$cc_text.'</p>';
-		
+			echo A5_Excerpt::text($args);
+			
 		endif;
 		
-	endif;
-	
-	if (!empty($instance['line']) && $i <  $instance['postcount']) :
+		if (!empty($instance['line']) && $i <  $instance['postcount']) :
+			
+			echo '<hr style="color: '.$instance['line_color'].'; background-color: '.$instance['line_color'].'; height: '.$instance['line'].'px;" />';
+			
+			$i++;
+			
+		endif;
 		
-		echo '<hr style="color: '.$instance['line_color'].'; background-color: '.$instance['line_color'].'; height: '.$instance['line'].'px;" />';
+		unset($cc_img, $source);
+			
+		$count++;
+			
+	endwhile;
 		
-		$i++;
-		
-	endif;
+	// Restore original Query & Post Data
+	wp_reset_query();
+	wp_reset_postdata();
 	
-endforeach;
-
-echo $cc_after_widget;
-
-// hooking into ads easy for the google tags
-
-if (AE_AD_TAGS == 1 && $instance['adsense']) :
-	
-	do_action('google_end_tag');
-	
-	if ($ae_options['ae_sidebar']==1) do_action('google_start_tag');
-
-	else do_action('google_ignore_tag');
-	
-endif;
+	echo $cc_after_widget;
 
 }
  
-}
+} // end of class
 
 add_action('widgets_init', create_function('', 'return register_widget("Category_Column_Widget");'));
 
