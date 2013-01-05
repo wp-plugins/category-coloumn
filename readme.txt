@@ -2,9 +2,9 @@
 Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
-Requires at least: 2.7
-Tested up to: 3.4
-Stable tag: 3.7
+Requires at least: 2.9
+Tested up to: 3.6
+Stable tag: 3.8.1
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -12,9 +12,9 @@ The Category Column does simply, what the name says; it will show excerpts of th
 
 The Category Column is mainly designed to give your blog a bit more of a newspaper behaviour. E.g. The plugin shows the latest posts from all categories with an offset of three posts (which are in the main column) on our homepage.
 
-If there is a post thumbnail, it will be displayed above the headline of the post. No further text will appear. If there is no thumbnail, only the headline and the excerpt of the post will be shown. When the plugin can detect neither the thumbnail nor the excerpt of a post, it will display just the first couple of sentences (or words) of a post.
+If there is a post thumbnail, it will be displayed above the headline of the post. No further text will appear. If there is no thumbnail, only the headline and the excerpt of the post will be shown. When the plugin can detect neither the thumbnail nor the excerpt of a post, it will display just the first couple of sentenses (or words) of a post.
 
-The Category Column was tested up to WP 3.4. It should work with versions down to 2.7 but was never tested on those.
+The Category Column was tested up to WP 3.6. It should work with versions down to 2.9 but was never tested on those.
 
 == Installation ==
 
@@ -63,6 +63,13 @@ to the widget style to get a nice shadow down right of the container. This is no
 2. The widget's settings section
 
 == Changelog ==
+
+= 3.8.1 =
+* bugfix with missing file
+
+= 3.8 =
+
+* Adjustment of the framework and more functionality
 
 = 3.7 =
 
@@ -147,3 +154,10 @@ Better excerpts and corract alt and title tags, fechting the thumbnails works no
 
 Complete overhaul of the code
 Hooks into the Ads Easy Plugin if Google AdSense Tags are in us
+
+= 3.8 =
+
+Adjustment of the framework and more functionality
+
+= 3.8.1 =
+bugfix with missing file
