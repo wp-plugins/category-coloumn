@@ -100,3 +100,7 @@ msgid ""
 "dashed black line on the left. If you leave that section empty, your theme "
 "will style the widget."
 msgstr ""
+
+#: class-lib/CC_WidgetClass.php:81
+msgid "Check to display only the headline of the post."
+msgstr ""

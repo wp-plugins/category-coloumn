@@ -567,7 +567,7 @@ function a5_range_field($field_id, $field_name, $min, $max, $value = false, $lab
  *
  */
  
-function a5_search_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = false, $echo = true) {
+function a5_search_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
 	$args = array ( 'type' => 'search',
 					'field_id' => $field_id,
@@ -591,7 +591,7 @@ function a5_search_field($field_id, $field_name, $min, $max, $value = false, $la
  *
  */
  
-function a5_tel_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = false, $echo = true) {
+function a5_tel_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
 	$args = array ( 'type' => 'tel',
 					'field_id' => $field_id,
@@ -615,7 +615,7 @@ function a5_tel_field($field_id, $field_name, $min, $max, $value = false, $label
  *
  */
  
-function a5_time_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = false, $echo = true) {
+function a5_time_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
 	$args = array ( 'type' => 'time',
 					'field_id' => $field_id,
@@ -639,7 +639,7 @@ function a5_time_field($field_id, $field_name, $min, $max, $value = false, $labe
  *
  */
  
-function a5_url_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = false, $echo = true) {
+function a5_url_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
 	$args = array ( 'type' => 'url',
 					'field_id' => $field_id,
@@ -663,7 +663,7 @@ function a5_url_field($field_id, $field_name, $min, $max, $value = false, $label
  *
  */
  
-function a5_week_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = false, $echo = true) {
+function a5_week_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
 	$args = array ( 'type' => 'week',
 					'field_id' => $field_id,
@@ -699,18 +699,18 @@ function a5_week_field($field_id, $field_name, $min, $max, $value = false, $labe
  *
  */
  
-function a5_checkgroup($fieldset_id, $fieldset_name, $options, $legend = false, $checkall = false, $attributes = false, $echo = true) {
+function a5_checkgroup($fieldset_id, $fieldset_name, $item_options, $legend = false, $checkall = false, $attributes = false, $echo = true) {
 	
 	$eol = "\r\n";
 	
-	if ($fielset_id) $attributes['id'] = $fieldset_id;
-	if ($fielset_name) $attributes['name'] = $fieldset_name;
+	if ($fieldset_id) $attributes['id'] = $fieldset_id;
+	if ($fieldset_name) $attributes['name'] = $fieldset_name;
 	
 	$legend = ($legend) ? '<legend>'.$legend.'</legend>'.$eol : '';
 	
 	if ($attributes) foreach ($attributes as $key => $val) $atts .= ' '.$key.'="'.$val.'"';
 	
-	foreach($options as $options) :
+	foreach($item_options as $options) :
 	
 		if (false == $options[4]) :
 			
@@ -767,18 +767,18 @@ function a5_checkgroup($fieldset_id, $fieldset_name, $options, $legend = false, 
  *
  */
  
-function a5_radiogroup($fieldset_id, $fieldset_name, $options, $legend = false, $attributes = false, $echo = true) {
+function a5_radiogroup($fieldset_id, $fieldset_name, $item_options, $legend = false, $attributes = false, $echo = true) {
 	
 	$eol = "\r\n";
 	
-	if ($fielset_id) $attributes['id'] = $fieldset_id;
-	if ($fielset_name) $attributes['name'] = $fieldset_name;
+	if ($fieldset_id) $attributes['id'] = $fieldset_id;
+	if ($fieldset_name) $attributes['name'] = $fieldset_name;
 	
 	$legend = ($legend) ? '<legend>'.$legend.'</legend>'.$eol : '';
 	
 	if ($attributes) foreach ($attributes as $key => $val) $atts .= ' '.$key.'="'.$val.'"';
 	
-	foreach($options as $options) :
+	foreach($item_options as $options) :
 	
 		if (false == $options[4]) :
 			

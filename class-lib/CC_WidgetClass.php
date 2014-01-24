@@ -26,7 +26,24 @@ function form($instance) {
 	
 	// setup some default settings
 	
-	$defaults = array( 'postcount' => 5, 'offset' => 3, 'home' => 1, 'wordcount' => 3, 'line' => 1, 'line_color' => '#dddddd', 'h' => 3);
+	$defaults = array(
+		'title' => NULL,
+		'postcount' => 5,
+		'offset' => 3,
+		'home' => 1,
+		'list' => NULL,
+		'showcat' => NULL,
+		'showcat_txt' => NULL,
+		'wordcount' => 3,
+		'linespace' => NULL,
+		'width' => NULL,
+		'words' => NULL,
+		'line' => 1,
+		'line_color' => '#dddddd',
+		'style' => NULL,
+		'h' => 3,
+		'headonly' => NULL
+	);
 	
 	$instance = wp_parse_args( (array) $instance, $defaults );
 	
@@ -45,6 +62,7 @@ function form($instance) {
 	$line_color=esc_attr($instance['line_color']);
 	$style=esc_attr($instance['style']);
 	$h = esc_attr($instance['h']);
+	$headonly = esc_attr($instance['headonly']);
 	
 	$base_id = 'widget-'.$this->id_base.'-'.$this->number.'-';
 	$base_name = 'widget-'.$this->id_base.'['.$this->number.']';
@@ -60,6 +78,7 @@ function form($instance) {
 	a5_checkbox($base_id.'home', $base_name.'[home]', $home, __('Check to have the offset only on your homepage.', self::language_file), array('space' => true));
 	a5_number_field($base_id.'width', $base_name.'[width]', $width, __('Width of the thumbnail (in px):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
 	a5_select($base_id.'h', $base_name.'[h]', $headings, $h, __('Weight of the Post Title:', self::language_file), false, array('space' => true));
+	a5_checkbox($base_id.'headonly', $base_name.'[headonly]', $headonly, __('Check to display only the headline of the post.', self::language_file), array('space' => true));
 	a5_number_field($base_id.'wordcount', $base_name.'[wordcount]', $wordcount, __('In case there is no excerpt defined, how many sentences are displayed:', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
 	a5_checkbox($base_id.'words', $base_name.'[words]', $words, __('Check to display words instead of sentences.', self::language_file), array('space' => true));
 	a5_checkbox($base_id.'linespace', $base_name.'[linespace]', $linespace, __('Check to have each sentense in a new line.', self::language_file), array('space' => true));
@@ -90,6 +109,7 @@ function update($new_instance, $old_instance) {
 	$instance['line_color'] = strip_tags($new_instance['line_color']);
 	$instance['style'] = strip_tags($new_instance['style']);
 	$instance['h'] = strip_tags($new_instance['h']);
+	$instance['headonly'] = strip_tags($new_instance['headonly']);
 	
 	return $instance;
 
@@ -98,6 +118,8 @@ function update($new_instance, $old_instance) {
 function widget($args, $instance) {
 	
 	extract( $args );
+	
+	$eol = "\r\n";
 	
 	$title = apply_filters('widget_title', $instance['title']);
 	
@@ -130,11 +152,10 @@ function widget($args, $instance) {
 		global $wp_query;
 		
 		$cc_page = $wp_query->get( 'paged' );
+		
 		$cc_numberposts = $wp_query->get( 'posts_per_page' );
 		
-		if ($cc_page) $cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset'];
-			
-		else $cc_offset=$instance['offset'];
+		$cc_offset = (empty($cc_page)) ? $cc_offset=$instance['offset'] : $cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset'];
 		
 		$cc_setup.='&offset='.$cc_offset;
 	
@@ -142,7 +163,7 @@ function widget($args, $instance) {
 	
 	if (is_category() && !$instance['list']) $cc_cat=get_query_var('cat');
 	
-	if ($instance['list'] || $cc_cat) $cc_setup.='&cat='.$instance['list'].',-'.$cc_cat;
+	if ($instance['list'] || isset($cc_cat)) $cc_setup.='&cat='.$instance['list'].',-'.$cc_cat;
 	
 	if (is_single()) :
 		
@@ -156,32 +177,22 @@ function widget($args, $instance) {
 	
 	$cc_posts = new WP_Query($cc_setup);
 	
+	$count = 0;
+	
 	while($cc_posts->have_posts()) :
-		
+	
 		$cc_posts->the_post();
 	
 		if ($instance['showcat']) :
-		
-			$post_categories = wp_get_post_categories( $post->ID);
 			
-			$cats = array();
-		
-			foreach($post_categories as $c) :
+			$post_byline = ($instance['showcat_txt']) ? $eol.'<p id="cc_byline-'.$widget_id.'-'.$count.'">'.$eol.$instance['showcat_txt'].' ' : $eol.'<p id="cc_byline-'.$widget_id.'-'.$count.'">';
 			
-				$cat = get_category( $c );
-			
-				$cats[] = $eol.'<a href="'.get_category_link( $c ).'" title="'.$cat->name.'">'.$cat->name.'</a>';
-			
-			endforeach;
-			
-			$post_byline = ($instance['showcat_txt']) ? $eol.'<p id="acc_byline-'.$widget_id.'-'.$count.'">'.$eol.$instance['showcat_txt'].' ' : $eol.'<p id="acc_byline-'.$widget_id.'-'.$count.'">';
-			
-			$post_byline .= implode(', ', $cats);
-		
-			$post_byline .= $eol.'</p>'.$eol;
-		
 			echo $post_byline;
-		
+			
+			the_category(', ');
+			
+			echo $eol.'</p>'.$eol;
+			
 		endif;
 	
 		$cc_tags = A5_Image::tags($post, 'cc_options', self::language_file);
@@ -190,74 +201,80 @@ function widget($args, $instance) {
 		$cc_image_title = $cc_tags['image_title'];
 		$cc_title_tag = $cc_tags['title_tag'];
 		
-		$eol = "\r\n";
 		$cc_headline = '<h'.$instance['h'].'>'.$eol.'<a href="'.get_permalink().'" title="'.$cc_title_tag.'">'.get_the_title().'</a>'.$eol.'</h'.$instance['h'].'>';
 		
 		// get thumbnail
-			
-		if (!$instance['width']) :
 		
-			$width = get_option('thumbnail_size_w');
+		if (empty($instance['headonly'])) :
 			
-			if (!empty($width)) $width = 150;
+			$default = A5_Image::get_default($instance['width']);
 			
-			$height = get_option('thumbnail_size_h');
-			
-			if (!empty($height)) :
-			
-				$height = 150;
+			if (!has_post_thumbnail()) :
 				
-			endif;
-			
-		else : 
-		
-			$width = $instance['width'];
-			
-			$height = false;
-			
-			if (has_post_thumbnail()) :
-			
-				$img_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'large');
+					$args = array (
+						'content' => $post->post_content,
+						'width' => $default[0],
+						'height' => $default[1], 
+						'option' => 'acc_options'
+					);	
+				   
+					$cc_image_info = A5_Image::thumbnail($args);
 					
-				$source = $img_url[0];
-				
-			endif;
-		
-		endif;
-		
-		if (has_post_thumbnail() && !$instance['width']) :
-		
-			$cc_img = get_the_post_thumbnail($post->ID, 'thumbnail');
-			
-		else :
-		
-			$args = array (
-			'thumb' => $source,
-			'content' => $post->post_content,
-			'width' => $width,
-			'height' => $height, 
-			'option' => 'cc_options'
-			);	
-		   
-			$image_info = A5_Image::thumbnail($args);
-			
-			$cc_thumb = $image_info['thumb'];
-			
-			$cc_width = $image_info['thumb_width'];
-	
-			$cc_height = $image_info['thumb_height'];
-			
-			if ($cc_thumb) :
-			
-				if ($cc_width) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" height="'.$cc_height.'" />';
+					$cc_thumb = $cc_image_info['thumb'];
 					
-				else $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" style="maxwidth: '.$width.'; maxheight: '.$height.';" />';
+					$cc_width = $cc_image_info['thumb_width'];
+			
+					$cc_height = $cc_image_info['thumb_height'];
+					
+					if ($cc_thumb) :
+					
+						if ($cc_width) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" height="'.$cc_height.'" />';
+							
+						else $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" style="maxwidth: '.$width.'; maxheight: '.$height.';" />';
+						
+					endif;
+					
+				else :
+				
+					$img_info = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'large');
+						
+					if (!$img_info):
+					
+						$src = get_the_post_thumbnail();
+					
+						$img = preg_match_all('/<\s*img[^>]+src\s*=\s*["\']?([^\s"\']+)["\']?[\s\/>]+/', $src, $matches);
+						
+						$img_info[0] = $matches[1][0];
+						
+						$img_size = A5_Image::get_size($img_info[0]);
+						
+						$img_info[1] = $img_size['width'];
+						
+						$img_info[2] = $img_size['height'];
+						
+					endif;
+					
+					$args = array (
+						'ratio' => $img_info[1]/$img_info[2],
+						'thumb_width' => $img_info[1],
+						'thumb_height' => $img_info[2],
+						'width' => $default[0],
+						'height' => $default[1]
+					);
+					
+					$img_size = A5_Image::count_size($args);
+					
+					$atts = array('title' => $cc_image_title, 'alt' => $cc_image_alt);
+					
+					$size = array($img_size['width'], $img_size['height']);
+				
+					$cc_img = get_the_post_thumbnail($post->ID, $size, $atts);
+					
+				endif;
 				
 			endif;
-			
-		endif;
-				
-		if ($cc_img) :
+					
+		if (isset($cc_img)) :
 			
 			echo '<a href="'.get_permalink().'">'.$cc_img.'</a>'.$eol.'<div style="clear: both;"></div>'.$eol.$cc_headline;
 	
@@ -267,23 +284,27 @@ function widget($args, $instance) {
 			
 			echo $cc_headline;
 			
-			/* in case the excerpt is not definded by theme or anything else, the first x sentences of the content are given */
-			
-			$type = (empty($instance['words'])) ? 'sentences' : 'words';
+			if (empty($instance['headonly'])) :
 				
-			$args = array(
-			'excerpt' => $post->post_excerpt,
-			'content' => $post->post_content,
-			'type' => $type,
-			'count' => $instance['wordcount'],
-			'linespace' => $instance['linespace'],
-			'filter' => true
-			);
-			
-			echo A5_Excerpt::text($args);
+				/* in case the excerpt is not definded by theme or anything else, the first x sentences of the content are given */
+				
+				$type = (empty($instance['words'])) ? 'sentences' : 'words';
+					
+				$args = array(
+					'excerpt' => $post->post_excerpt,
+					'content' => $post->post_content,
+					'type' => $type,
+					'count' => $instance['wordcount'],
+					'linespace' => $instance['linespace'],
+					'filter' => true
+				);
+				
+				echo A5_Excerpt::text($args);
+				
+			endif;
 			
 		endif;
-		
+					
 		if (!empty($instance['line']) && $i <  $instance['postcount']) :
 			
 			echo '<hr style="color: '.$instance['line_color'].'; background-color: '.$instance['line_color'].'; height: '.$instance['line'].'px;" />';
@@ -294,7 +315,7 @@ function widget($args, $instance) {
 		
 		unset($cc_img, $source);
 			
-		$count++;
+		$count++; 
 			
 	endwhile;
 		
