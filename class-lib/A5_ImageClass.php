@@ -3,8 +3,8 @@
 /**
  *
  * Class A5 Images
- *
- * @ A5 Plugin Framework
+ * * @ A5 Plugin Framework
+ * Version: 0.9.8 alpha
  *
  * Gets the alt and title tag for attachments
  *
@@ -14,9 +14,9 @@
 
 class A5_Image {
 	
-	public static function tags($post, $image_cache, $language_file) {
+	public static function tags($post, $image_cache, $language_file, $sitewide = false) {
 		
-		$options = get_option($image_cache);
+		$options = (true === $sitewide) ? get_site_option($image_cache) : get_option($image_cache);
 		
 		$cache = $options['tags'];
 		
@@ -60,7 +60,7 @@ class A5_Image {
 			
 			$options['tags'] = $cache;
 			
-			update_option($image_cache, $options);
+			(true === $sitewide) ? update_site_option($image_cache, $options) : update_option($image_cache, $options);
 		
 		endif;
 		
@@ -85,6 +85,8 @@ class A5_Image {
 	
 			$image = preg_match_all('/<\s*img[^>]+src\s*=\s*["\']?([^\s"\']+)["\']?[\s\/>]+/', do_shortcode($content), $matches);
 			
+			$sitewide = (!empty($sitewide)) ? $sitewide : true;
+			
 			$number = (!empty($number)) ? $number : 1;
 			
 			if ($number == 'last' || $number > count($matches [1])) $number = count($matches [1]);
@@ -97,7 +99,7 @@ class A5_Image {
 		
 		if (empty($thumb)) return false;
 		
-		$options = get_option($option);
+		$options = (true === $sitewide) ? get_site_option($option) : get_option($option);
 		
 		$cache = $options['sizes'];
 		
@@ -108,13 +110,21 @@ class A5_Image {
 		
 		else :
 			
+			$is_image = self::check_url($thumb);
+			
+			if ($is_image === false) return false;
+			
 			$size = self::get_size($thumb);
+			
+			if ($width > $size['width']) $width = $size['width'];
+			
+			if ($height > $size['height']) $height = $size['height'];
 			
 			$thumb_width = $size['width'];
 			
 			$thumb_height = $size['height'];
 			
-			if (!$thumb_width) return false;
+			if (!$thumb_height) return false;
 			
 			$ratio = $thumb_width/$thumb_height;
 			
@@ -136,7 +146,7 @@ class A5_Image {
 			
 			$options['sizes'] = $cache;
 			
-			update_option($option, $options);
+			(true === $sitewide) ? update_site_option($option, $options) : update_option($option, $options);
 			
 		endif;
 	
@@ -172,7 +182,7 @@ class A5_Image {
 			
 				if ( ! function_exists( 'download_url' ) ) require_once ABSPATH.'/wp-admin/includes/file.php';
 			
-				$tmp_image = download_url($image);
+				$tmp_image = download_url($img);
 				
 				if (!is_wp_error($tmp_image)) $imgsize = @getimagesize($img);
 				
@@ -251,6 +261,42 @@ class A5_Image {
 		endif;
 		
 		return array ($width, $height);
+		
+	}
+	
+	// Check whether url has status 200 and is image
+	 
+	private static function check_url($url, $type = false) {
+		
+		$return = get_headers($url, 1);
+		
+		switch ($type) :
+		
+			case 'url' :
+			
+				if (strstr($return[0], '200')) return true;
+			
+			break;
+			
+			case 'image' :
+			
+				if (strstr($return['Content-Type'], 'image')) return true;
+			
+			break;
+			
+			default : 
+			
+				if (strstr($return[0], '200') && strstr($return['Content-Type'], 'image')) : 
+				
+					return true;
+					
+				else : 
+				
+					return false;
+					
+				endif;
+		
+		endswitch;
 		
 	}
 	

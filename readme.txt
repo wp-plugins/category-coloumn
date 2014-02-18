@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.9
 Tested up to: 3.9
-Stable tag: 3.9
+Stable tag: 3.9.1
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -63,6 +63,10 @@ to the widget style to get a nice shadow down right of the container. This is no
 2. The widget's settings section
 
 == Changelog ==
+
+= 3.9.1 =
+
+* adjustments in framework, possibility to add image border
 
 = 3.9 = 
 
@@ -171,3 +175,7 @@ bugfix with missing file
 = 3.9 = 
 
 more responsive, a new feature and changes in framework
+
+= 3.9.1 =
+
+adjustments in framework, possibility to add image border
