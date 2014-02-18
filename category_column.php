@@ -3,7 +3,7 @@
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
 Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.9. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets. You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
-Version: 3.9
+Version: 3.9.1
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -59,8 +59,8 @@ const language_file = 'category_column';
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 		add_filter('plugin_row_meta', array($this, 'register_links'),10,2);
 		
-		register_activation_hook(  __FILE__, array($this, 'set_options') );
-		register_deactivation_hook(  __FILE__, array($this, 'unset_options') );
+		register_activation_hook(  __FILE__, array($this, 'install') );
+		register_deactivation_hook(  __FILE__, array($this, 'uninstall') );
 		
 		$eol = "\r\n";
 		$tab = "\t";
@@ -102,7 +102,7 @@ const language_file = 'category_column';
 	
 	// Creating default options on activation
 	
-	function set_options() {
+	function install() {
 		
 		$default = array(
 			'tags' => array(),
@@ -115,7 +115,7 @@ const language_file = 'category_column';
 	
 	// Cleaning on deactivation
 	
-	function unset_options() {
+	function uninstall() {
 		
 		delete_option('cc_options');
 		

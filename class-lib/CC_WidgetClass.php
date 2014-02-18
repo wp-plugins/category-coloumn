@@ -42,6 +42,7 @@ function form($instance) {
 		'line_color' => '#dddddd',
 		'style' => NULL,
 		'h' => 3,
+		'imgborder' => NULL,
 		'headonly' => NULL
 	);
 	
@@ -63,6 +64,7 @@ function form($instance) {
 	$style=esc_attr($instance['style']);
 	$h = esc_attr($instance['h']);
 	$headonly = esc_attr($instance['headonly']);
+	$imgborder=esc_attr($instance['imgborder']);
 	
 	$base_id = 'widget-'.$this->id_base.'-'.$this->number.'-';
 	$base_name = 'widget-'.$this->id_base.'['.$this->number.']';
@@ -77,6 +79,7 @@ function form($instance) {
 	a5_number_field($base_id.'offset', $base_name.'[offset]', $offset, __('Offset (how many posts are spared out in the beginning):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
 	a5_checkbox($base_id.'home', $base_name.'[home]', $home, __('Check to have the offset only on your homepage.', self::language_file), array('space' => true));
 	a5_number_field($base_id.'width', $base_name.'[width]', $width, __('Width of the thumbnail (in px):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
+	a5_text_field($base_id.'imgborder', $base_name.'[imgborder]', $imgborder, sprintf(__('If wanting a border around the image, write the style here. %s would make it a black border, 1px wide.', self::language_file), '<strong>1px solid #000000</strong>'), array('space' => true, 'class' => 'widefat'));
 	a5_select($base_id.'h', $base_name.'[h]', $headings, $h, __('Weight of the Post Title:', self::language_file), false, array('space' => true));
 	a5_checkbox($base_id.'headonly', $base_name.'[headonly]', $headonly, __('Check to display only the headline of the post.', self::language_file), array('space' => true));
 	a5_number_field($base_id.'wordcount', $base_name.'[wordcount]', $wordcount, __('In case there is no excerpt defined, how many sentences are displayed:', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
@@ -85,7 +88,7 @@ function form($instance) {
 	a5_number_field($base_id.'line', $base_name.'[line]', $line, __('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
 	a5_color_field($base_id.'line_color', $base_name.'[line_color]', $line_color, __('The color of the line (e.g. #cccccc):', self::language_file), array('space' => true, 'size' => 13));
 	a5_textarea($base_id.'style', $base_name.'[style]', $style, sprintf(__('Here you can finally style the widget. Simply type something like%1$s%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$sto get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', self::language_file), '<strong>', '<br />', '</strong>'), array('space' => true, 'class' => 'widefat', 'style' => 'height: 60px;'));
-	a5_resize_textarea(array($base_id.'style'), true);
+	a5_resize_textarea(array($base_id.'style'));
 
 } // form
 
@@ -110,6 +113,7 @@ function update($new_instance, $old_instance) {
 	$instance['style'] = strip_tags($new_instance['style']);
 	$instance['h'] = strip_tags($new_instance['h']);
 	$instance['headonly'] = strip_tags($new_instance['headonly']);
+	$instance['imgborder'] = strip_tags($new_instance['imgborder']);
 	
 	return $instance;
 
@@ -145,33 +149,33 @@ function widget($args, $instance) {
 	
 	$i=1;
 	
-	$cc_setup="posts_per_page=".$instance['postcount'];
-	
-	if (is_home() || empty($instance['home'])) :
+	$cc_setup['posts_per_page'] = $instance['postcount'];
 		
-		global $wp_query;
+		if (is_category() || is_home() || empty($instance['home'])) :
+			
+			global $wp_query;
+			
+			$cc_page = $wp_query->get( 'paged' );
+			
+			$cc_numberposts = $wp_query->get( 'posts_per_page' );
+			
+			$cc_offset = (empty($cc_page)) ? $cc_offset=$instance['offset'] : $cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset'];
+			
+			$cc_setup['offset'] = $cc_offset;
 		
-		$cc_page = $wp_query->get( 'paged' );
+		endif;
 		
-		$cc_numberposts = $wp_query->get( 'posts_per_page' );
+		$cc_cat = (is_category()) ? ',-'.get_query_var('cat') : '';
 		
-		$cc_offset = (empty($cc_page)) ? $cc_offset=$instance['offset'] : $cc_offset=(($cc_page-1)*$cc_numberposts)+$instance['offset'];
+		if ($instance['list'] || !empty($cc_cat)) $cc_setup['cat'] = $instance['list'].$cc_cat;
 		
-		$cc_setup.='&offset='.$cc_offset;
-	
-	endif;
-	
-	if (is_category() && !$instance['list']) $cc_cat=get_query_var('cat');
-	
-	if ($instance['list'] || isset($cc_cat)) $cc_setup.='&cat='.$instance['list'].',-'.$cc_cat;
-	
-	if (is_single()) :
+		if (is_single()) :
+			
+			global $wp_query;
+			
+			$cc_setup['post__not_in'] = array($wp_query->get_queried_object_id()); 
 		
-		global $wp_query;
-		
-		$cc_setup.='&exclude='.$wp_query->get_queried_object_id();
-		
-	endif;
+		endif;
 	
 	global $post;
 	
@@ -209,13 +213,15 @@ function widget($args, $instance) {
 			
 			$default = A5_Image::get_default($instance['width']);
 			
+			$cc_imgborder = (isset($instance['imgborder'])) ? ' border: '.$instance['imgborder'].';' : '';
+			
 			if (!has_post_thumbnail()) :
 				
 					$args = array (
 						'content' => $post->post_content,
 						'width' => $default[0],
 						'height' => $default[1], 
-						'option' => 'acc_options'
+						'option' => 'cc_options'
 					);	
 				   
 					$cc_image_info = A5_Image::thumbnail($args);
@@ -228,9 +234,9 @@ function widget($args, $instance) {
 					
 					if ($cc_thumb) :
 					
-						if ($cc_width) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" height="'.$cc_height.'" />';
+						if ($cc_width) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" height="'.$cc_height.'" style="'.$cc_imgborder.'" />';
 							
-						else $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" style="maxwidth: '.$width.'; maxheight: '.$height.';" />';
+						else $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" style="maxwidth: '.$width.'; maxheight: '.$height.';'.$acc_imgborder.'" />';
 						
 					endif;
 					
@@ -241,34 +247,42 @@ function widget($args, $instance) {
 					if (!$img_info):
 					
 						$src = get_the_post_thumbnail();
-					
+						
 						$img = preg_match_all('/<\s*img[^>]+src\s*=\s*["\']?([^\s"\']+)["\']?[\s\/>]+/', $src, $matches);
 						
-						$img_info[0] = $matches[1][0];
+						if ($img): 
 						
-						$img_size = A5_Image::get_size($img_info[0]);
-						
-						$img_info[1] = $img_size['width'];
-						
-						$img_info[2] = $img_size['height'];
+							$img_info[0] = $matches[1][0];
+							
+							$img_size = A5_Image::get_size($img_info[0]);
+							
+							$img_info[1] = $img_size['width'];
+							
+							$img_info[2] = $img_size['height'];
+							
+						endif;
 						
 					endif;
 					
-					$args = array (
-						'ratio' => $img_info[1]/$img_info[2],
-						'thumb_width' => $img_info[1],
-						'thumb_height' => $img_info[2],
-						'width' => $default[0],
-						'height' => $default[1]
-					);
+					if ($img_info) :
 					
-					$img_size = A5_Image::count_size($args);
+						$args = array (
+							'ratio' => $img_info[1]/$img_info[2],
+							'thumb_width' => $img_info[1],
+							'thumb_height' => $img_info[2],
+							'width' => $default[0],
+							'height' => $default[1]
+						);
+						
+						$img_size = A5_Image::count_size($args);
+						
+						$atts = array('title' => $cc_image_title, 'alt' => $cc_image_alt, 'style' => $cc_imgborder);
+						
+						$size = array($img_size['width'], $img_size['height']);
 					
-					$atts = array('title' => $cc_image_title, 'alt' => $cc_image_alt);
-					
-					$size = array($img_size['width'], $img_size['height']);
-				
-					$cc_img = get_the_post_thumbnail($post->ID, $size, $atts);
+						$cc_img = get_the_post_thumbnail($post->ID, $size, $atts);
+						
+					endif;
 					
 				endif;
 				

@@ -3,9 +3,8 @@
 /**
  *
  * Class A5 Dynamic CSS
- *
- * @ A5 Plugin Framework
- * Version: 0.9.6 alpha
+ * * @ A5 Plugin Framework
+ * Version: 0.9.8 alpha
  *
  * Presses the dynamical CSS of all plugins into one virtual stylesheet
  *
@@ -45,7 +44,7 @@ class A5_DynamicCSS {
 		
 		$A5_css_file=get_bloginfo('url').'/?A5_file=css';
 			
-		wp_register_style('A5-framework', $A5_css_file, false, '0.9.6 alpha', 'all');
+		wp_register_style('A5-framework', $A5_css_file, false, '0.9.8 alpha', 'all');
 		wp_enqueue_style('A5-framework');
 		
 	}
@@ -53,7 +52,6 @@ class A5_DynamicCSS {
 	function write_dss() {
 	
 		$eol = "\r\n";
-		$tab = "\t";
 		
 		$css_text = '@charset "UTF-8";'.$eol.'/* CSS Document createtd by the A5 Plugin Framework */'.$eol;
 		

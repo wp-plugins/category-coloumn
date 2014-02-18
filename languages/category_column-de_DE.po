@@ -1,4 +1,4 @@
-# Copyright (C) 2013 
+# Copyright (C) 2014 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
@@ -8,18 +8,18 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-01-24 21:18+0200\n"
+"PO-Revision-Date: 2014-02-18 17:00+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Language: de_DE\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.4\n"
 
-#: category_column.php:82
+#: category_column.php:95
 msgid "FAQ"
 msgstr "FAQ"
 
-#: category_column.php:83
+#: category_column.php:96
 msgid "Donate"
 msgstr "Spenden"
 
@@ -35,69 +35,81 @@ msgstr ""
 "Konfiguriere Aussehen und Inhalt des Widgets, um Thumbnails und Auszüge von "
 "Posts in deiner Sidebar anzuzeigen."
 
-#: class-lib/CC_WidgetClass.php:54
+#: class-lib/CC_WidgetClass.php:74
 msgid "Title:"
 msgstr "Titel:"
 
-#: class-lib/CC_WidgetClass.php:55
+#: class-lib/CC_WidgetClass.php:75
 msgid ""
 "To exclude certain categories or to show just a special category, simply "
 "write their ID&#39;s separated by comma (e.g. %s-5, 2, 4%s will show "
 "categories 2 and 4 and will exclude category 5):"
 msgstr ""
 "Um bestimmte Kategorien auszuschließen oder nur eine bestimmte Kategorie "
-"anzuzeigen, einfach die ID&#39;s in eine kommagetrennte Liste schreiben (z."
+"anzuzeigen, einfach die ID&#39;s in eine komma-getrennte Liste schreiben (z."
 "B. %s-5,2,4%s wird Kategorie 2 und 4 anzeigen und Kategorie 5 ausschließen):"
 
-#: class-lib/CC_WidgetClass.php:56
+#: class-lib/CC_WidgetClass.php:76
 msgid "Check to show the categories in which the post is filed."
 msgstr ""
 "Anklicken, um die Kategorien, in denen der Artikel publiziert ist, "
 "anzuzeigen."
 
-#: class-lib/CC_WidgetClass.php:57
+#: class-lib/CC_WidgetClass.php:77
 msgid ""
 "Give some text that you want in front of the post&#39;s categtories (i.e "
 "&#39;filed under&#39;:"
 msgstr ""
 "Gib hier den Text ein, den du vor den Artikelkategorien haben willst (z.B. "
-"&#39;abgelegt in&#39;:"
+"&#39;abgelegt in&#39;):"
 
-#: class-lib/CC_WidgetClass.php:58
+#: class-lib/CC_WidgetClass.php:78
 msgid "How many posts will be displayed in the sidebar:"
 msgstr "Wie viele Posts sollen in der Sidebar angezeigt werden:"
 
-#: class-lib/CC_WidgetClass.php:59
+#: class-lib/CC_WidgetClass.php:79
 msgid "Offset (how many posts are spared out in the beginning):"
 msgstr "Offset (wie viele Posts werden am Anfang übersprungen):"
 
-#: class-lib/CC_WidgetClass.php:60
+#: class-lib/CC_WidgetClass.php:80
 msgid "Check to have the offset only on your homepage."
 msgstr "Anklicken, um den Offset nur auf der Homepage zu haben."
 
-#: class-lib/CC_WidgetClass.php:61
+#: class-lib/CC_WidgetClass.php:81
 msgid "Width of the thumbnail (in px):"
 msgstr "Breite des Thumbnails (in px):"
 
-#: class-lib/CC_WidgetClass.php:62
+#: class-lib/CC_WidgetClass.php:82
+msgid ""
+"If wanting a border around the image, write the style here. %s would make it "
+"a black border, 1px wide."
+msgstr ""
+"Wenn du einen Rahmen um das Bild willst, style es hier. %s sorgt für einen "
+"schwarzen, 1px weiten Rahmen."
+
+#: class-lib/CC_WidgetClass.php:83
 msgid "Weight of the Post Title:"
 msgstr "Gewicht der Überschrift:"
 
-#: class-lib/CC_WidgetClass.php:63
+#: class-lib/CC_WidgetClass.php:84
+msgid "Check to display only the headline of the post."
+msgstr "Anklicken, um nur die Überschrift zu zeigen."
+
+#: class-lib/CC_WidgetClass.php:85
 msgid "In case there is no excerpt defined, how many sentences are displayed:"
 msgstr ""
 "Wie viele Sätze des Posts sollen angezeigt werden, falls kein Auszug "
 "definiert ist:"
 
-#: class-lib/CC_WidgetClass.php:64
+#: class-lib/CC_WidgetClass.php:86
 msgid "Check to display words instead of sentences."
 msgstr "Anklicken, wenn Wörter statt Sätze angezeigt werden sollen:"
 
-#: class-lib/CC_WidgetClass.php:65
+#: class-lib/CC_WidgetClass.php:87
 msgid "Check to have each sentense in a new line."
 msgstr "Anklicken, um jeden Satz in einer neuen Zeile zu haben."
 
-#: class-lib/CC_WidgetClass.php:66
+#: class-lib/CC_WidgetClass.php:88
 msgid ""
 "If you want a line between the posts, this is the height in px (if not "
 "wanting a line, leave emtpy):"
@@ -105,11 +117,11 @@ msgstr ""
 "Wenn eine Trennlinie zwischen den Posts sein soll, ist dies die Höhe der "
 "Linie in px (einfach leer lassen, wenn keine Linie gewünscht wird):"
 
-#: class-lib/CC_WidgetClass.php:67
+#: class-lib/CC_WidgetClass.php:89
 msgid "The color of the line (e.g. #cccccc):"
 msgstr "Die Farbe der Trennlinie (z.B. #cccccc):"
 
-#: class-lib/CC_WidgetClass.php:68
+#: class-lib/CC_WidgetClass.php:90
 msgid ""
 "Here you can finally style the widget. Simply type something like%1$s"
 "%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$sto get just a "
@@ -120,7 +132,3 @@ msgstr ""
 "%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$seintragen, um "
 "eine schwarze gestrichelte Linie am linken Rand zu bekommen. Wenn dieses "
 "Feld leer bleibt, übernimmt das Theme das Styling des Widgets."
-
-#: class-lib/CC_WidgetClass.php:81
-msgid "Check to display only the headline of the post."
-msgstr "Anklicken, um nur die Überschrift zu zeigen."
