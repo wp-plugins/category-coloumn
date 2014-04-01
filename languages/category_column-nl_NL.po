@@ -4,30 +4,102 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Caegory Column\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/category-coloumn\n"
-"POT-Creation-Date: 2011-01-13 00:01:08+00:00\n"
+"POT-Creation-Date: 2014-03-29 10:07+0200\n"
+"PO-Revision-Date: 2014-03-29 10:07+0200\n"
+"Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
+"Language-Team: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-02-18 17:04+0200\n"
-"Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
-"Language-Team: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Language: nl_NL\n"
 "X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: category_column.php:82
+#: category_column.php:103
 msgid "FAQ"
 msgstr "FAQ"
 
-#: category_column.php:83
+#: category_column.php:104
 msgid "Donate"
 msgstr "Donatie"
 
-#: class-lib/A5_ImageClass.php:40
+#: category_column.php:113 class-lib/A5_OptionPageClass.php:31
+#: class-lib/CC_AdminClass.php:34
+msgid "Settings"
+msgstr "Instellingen"
+
+#: class-lib/A5_ImageClass.php:47
 msgid "Permalink to"
 msgstr "Link naar: "
 
-#: class-lib/CC_WidgetClass.php:18
+#: class-lib/A5_OptionPageClass.php:112
+msgid "Click to toggle"
+msgstr "Klicken, om om te schakelen."
+
+#: class-lib/CC_AdminClass.php:47
+msgid ""
+"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-"
+"plugin"
+msgstr ""
+"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-"
+"plugin"
+
+#: class-lib/CC_AdminClass.php:47
+msgid "Plugin Support"
+msgstr "Plugin Support"
+
+#: class-lib/CC_AdminClass.php:59
+msgid "Debug Info"
+msgstr "Debug info"
+
+#: class-lib/CC_AdminClass.php:86
+msgid "Styling of the widgets"
+msgstr "Styling van de widgets"
+
+#: class-lib/CC_AdminClass.php:88
+msgid "Widget container:"
+msgstr "Widget container:"
+
+#: class-lib/CC_AdminClass.php:88
+msgid ""
+"You can enter your own style for the widgets here. This will overwrite the "
+"styles of your theme."
+msgstr ""
+"Je kunt hier je eigen stijl voor de widgets invoegen. Dat gaat de stijlen "
+"van je theme overschrijven."
+
+#: class-lib/CC_AdminClass.php:88
+msgid ""
+"If you leave this empty, you can still style every instance of the widget "
+"individually."
+msgstr ""
+"Als je dit veld leeg laat, kun je noch steeds elke instantie van de widget "
+"individueel aanpassen."
+
+#: class-lib/CC_AdminClass.php:90
+msgid "Debug:"
+msgstr "Debug:"
+
+#: class-lib/CC_AdminClass.php:90
+msgid ""
+"If you can&#39;t reach the dynamical style sheet, you&#39;ll have to diplay "
+"the styles inline. By clicking here you can do so."
+msgstr ""
+"In sommige gevallen kan de dynamische style sheet niet worden geladen. Als "
+"je hier klickt, wordt de CSS inline in de HTML"
+
+#: class-lib/CC_AdminClass.php:98
+msgid "Just put some css code here."
+msgstr "Vul hier jouw css code in."
+
+#: class-lib/CC_WidgetClass.php:20
 msgid ""
 "Configure the output and looks of the widget. Then display thumbnails and "
 "excerpts of posts in your sidebars."
@@ -35,11 +107,12 @@ msgstr ""
 "Bepaal de inhoud en het uiterlijk van de widget en laat daarna thumbnails en "
 "excerpten van posts in jouw sidebars zien."
 
-#: class-lib/CC_WidgetClass.php:54
+#: class-lib/CC_WidgetClass.php:78
 msgid "Title:"
 msgstr "Titel:"
 
-#: class-lib/CC_WidgetClass.php:55
+#: class-lib/CC_WidgetClass.php:79
+#, php-format
 msgid ""
 "To exclude certain categories or to show just a special category, simply "
 "write their ID&#39;s separated by comma (e.g. %s-5, 2, 4%s will show "
@@ -49,13 +122,13 @@ msgstr ""
 "laten zien, typ gewoon hun ID&#39;s gescheiden door een komma (bijv. "
 "%s-5,2,4%s zal categorieën 2 en 4 tonen en categorie 5 uitsluiten):"
 
-#: class-lib/CC_WidgetClass.php:56
+#: class-lib/CC_WidgetClass.php:80
 msgid "Check to show the categories in which the post is filed."
 msgstr ""
 "Klik hier, om de categorieën te tonen, onder welke de artikel is "
 "gepubliceerd."
 
-#: class-lib/CC_WidgetClass.php:57
+#: class-lib/CC_WidgetClass.php:81
 msgid ""
 "Give some text that you want in front of the post&#39;s categtories (i.e "
 "&#39;filed under&#39;:"
@@ -63,41 +136,54 @@ msgstr ""
 "Geef hier een zin die voor de categorieën wilt hebben staan (bv. &#39;"
 "geplaatst in&#39;:"
 
-#: class-lib/CC_WidgetClass.php:58
+#: class-lib/CC_WidgetClass.php:82
 msgid "How many posts will be displayed in the sidebar:"
 msgstr "Hoeveel posts zullen in de sidebar getoond worden:"
 
-#: class-lib/CC_WidgetClass.php:59
+#: class-lib/CC_WidgetClass.php:83
 msgid "Offset (how many posts are spared out in the beginning):"
 msgstr "Offset (hoeveel posts zullen in het begin niet te zien zijn):"
 
-#: class-lib/CC_WidgetClass.php:60
+#: class-lib/CC_WidgetClass.php:84
 msgid "Check to have the offset only on your homepage."
 msgstr "Klik hier, om de offset alleen maar op de startpagina te hebben."
 
-#: class-lib/CC_WidgetClass.php:61
+#: class-lib/CC_WidgetClass.php:85
 msgid "Width of the thumbnail (in px):"
 msgstr "Breedte van de thumbnail (in px):"
 
-#: class-lib/CC_WidgetClass.php:62
+#: class-lib/CC_WidgetClass.php:86
+#, php-format
+msgid ""
+"If wanting a border around the image, write the style here. %s would make it "
+"a black border, 1px wide."
+msgstr ""
+"Als je een rand rond de afbeelding wilt, schrijf de stijl hier. %s zou een "
+"zwarte rand van 1px breedte geven."
+
+#: class-lib/CC_WidgetClass.php:87
 msgid "Weight of the Post Title:"
 msgstr "Gewicht van de Rubrik:"
 
-#: class-lib/CC_WidgetClass.php:63
+#: class-lib/CC_WidgetClass.php:88
+msgid "Check to display only the headline of the post."
+msgstr "Klik hier, om alleen de rubriek te tonen."
+
+#: class-lib/CC_WidgetClass.php:89
 msgid "In case there is no excerpt defined, how many sentences are displayed:"
 msgstr ""
 "Hoeveel zinnen van de post zullen te zien zijn, als er geen excerpt "
 "gedefinieerd is:"
 
-#: class-lib/CC_WidgetClass.php:64
+#: class-lib/CC_WidgetClass.php:90
 msgid "Check to display words instead of sentences."
 msgstr "Klik hier, om woorden in plaats van zinnen te tonen."
 
-#: class-lib/CC_WidgetClass.php:65
+#: class-lib/CC_WidgetClass.php:91
 msgid "Check to have each sentense in a new line."
 msgstr "Klik hier, om elke zin in een nieuwe lijn te hebben."
 
-#: class-lib/CC_WidgetClass.php:66
+#: class-lib/CC_WidgetClass.php:92
 msgid ""
 "If you want a line between the posts, this is the height in px (if not "
 "wanting a line, leave emtpy):"
@@ -105,11 +191,12 @@ msgstr ""
 "Als je een lijn tussen de posts wilt, is dit de hoogte in px (gewoon leeg "
 "laten, om geen lijn te hebben):"
 
-#: class-lib/CC_WidgetClass.php:67
+#: class-lib/CC_WidgetClass.php:93
 msgid "The color of the line (e.g. #cccccc):"
 msgstr "De kleur van die lijn (bv. #cccccc):"
 
-#: class-lib/CC_WidgetClass.php:68
+#: class-lib/CC_WidgetClass.php:94
+#, php-format
 msgid ""
 "Here you can finally style the widget. Simply type something like%1$s"
 "%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$sto get just a "
@@ -120,15 +207,3 @@ msgstr ""
 "%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$som een zwarte "
 "gestreepte lijn aan de linker kant te hebben. Als je dit leeg laat, zal het "
 "theme de stijl van de widget bepalen."
-
-#: class-lib/CC_WidgetClass.php:81
-msgid "Check to display only the headline of the post."
-msgstr "Klik hier, om alleen de rubriek te tonen."
-
-#: class-lib/CC_WidgetClass.php:123
-msgid ""
-"If wanting a border around the image, write the style here. %s would make it "
-"a black border, 1px wide."
-msgstr ""
-"Als je een rand rond de afbeelding wilt, schrijf de stijl hier. %s zou een "
-"zwarte rand van 1px breedte geven."

@@ -12,6 +12,8 @@
 class Category_Column_Widget extends WP_Widget {
 	
 const language_file = 'category_column';
+
+private static $options;
  
 function Category_Column_Widget() {
 
@@ -19,6 +21,8 @@ function Category_Column_Widget() {
 	$control_opts = array( 'width' => 400 );
 	
 	parent::WP_Widget(false, $name = 'Category Column', $widget_opts, $control_opts);
+	
+	self::$options = get_option('cc_options');
 
 }
  
@@ -36,7 +40,7 @@ function form($instance) {
 		'showcat_txt' => NULL,
 		'wordcount' => 3,
 		'linespace' => NULL,
-		'width' => NULL,
+		'width' => get_option('thumbnail_size_w'),
 		'words' => NULL,
 		'line' => 1,
 		'line_color' => '#dddddd',
@@ -87,7 +91,7 @@ function form($instance) {
 	a5_checkbox($base_id.'linespace', $base_name.'[linespace]', $linespace, __('Check to have each sentense in a new line.', self::language_file), array('space' => true));
 	a5_number_field($base_id.'line', $base_name.'[line]', $line, __('If you want a line between the posts, this is the height in px (if not wanting a line, leave emtpy):', self::language_file), array('space' => true, 'size' => 4, 'step' => 1));
 	a5_color_field($base_id.'line_color', $base_name.'[line_color]', $line_color, __('The color of the line (e.g. #cccccc):', self::language_file), array('space' => true, 'size' => 13));
-	a5_textarea($base_id.'style', $base_name.'[style]', $style, sprintf(__('Here you can finally style the widget. Simply type something like%1$s%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$sto get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', self::language_file), '<strong>', '<br />', '</strong>'), array('space' => true, 'class' => 'widefat', 'style' => 'height: 60px;'));
+	if (empty(self::$options['css'])) a5_textarea($base_id.'style', $base_name.'[style]', $style, sprintf(__('Here you can finally style the widget. Simply type something like%1$s%2$sborder-left: 1px dashed;%2$sborder-color: #000000;%3$s%2$sto get just a dashed black line on the left. If you leave that section empty, your theme will style the widget.', self::language_file), '<strong>', '<br />', '</strong>'), array('space' => true, 'class' => 'widefat', 'style' => 'height: 60px;'));
 	a5_resize_textarea(array($base_id.'style'));
 
 } // form
@@ -106,7 +110,6 @@ function update($new_instance, $old_instance) {
 	$instance['wordcount'] = strip_tags($new_instance['wordcount']);
 	$instance['width'] = strip_tags($new_instance['width']);
 	$instance['words'] = strip_tags($new_instance['words']);
-	$instance['adsense'] = strip_tags($new_instance['adsense']);
 	$instance['linespace'] = strip_tags($new_instance['linespace']);
 	$instance['line'] = strip_tags($new_instance['line']);
 	$instance['line_color'] = strip_tags($new_instance['line_color']);
@@ -128,20 +131,14 @@ function widget($args, $instance) {
 	$title = apply_filters('widget_title', $instance['title']);
 	
 	if (empty($instance['style'])) :
-	
-		$cc_before_widget=$before_widget;
-		$cc_after_widget=$after_widget;
-	
-	else :
-	
-		$cc_style=str_replace(array("\r\n", "\n", "\r"), '', $instance['style']);
+			
+		$style=str_replace(array("\r\n", "\n", "\r"), '', $instance['style']);
 		
-		$cc_before_widget="<div id=\"".$widget_id."\" style=\"".$cc_style."\">";
-		$cc_after_widget="</div>";
+		$before_widget = str_replace('>', 'style="'.$style.'">', $before_widget);
 	
 	endif;
 	
-	echo $cc_before_widget;
+	echo $before_widget;
 	
 	if ( $title ) echo $before_title . $title . $after_title;
  
@@ -199,7 +196,7 @@ function widget($args, $instance) {
 			
 		endif;
 	
-		$cc_tags = A5_Image::tags($post, 'cc_options', self::language_file);
+		$cc_tags = A5_Image::tags(self::language_file);
 		
 		$cc_image_alt = $cc_tags['image_alt'];
 		$cc_image_title = $cc_tags['image_title'];
@@ -211,84 +208,29 @@ function widget($args, $instance) {
 		
 		if (empty($instance['headonly'])) :
 			
-			$default = A5_Image::get_default($instance['width']);
-			
 			$cc_imgborder = (isset($instance['imgborder'])) ? ' border: '.$instance['imgborder'].';' : '';
 			
-			if (!has_post_thumbnail()) :
-				
-					$args = array (
-						'content' => $post->post_content,
-						'width' => $default[0],
-						'height' => $default[1], 
-						'option' => 'cc_options'
-					);	
-				   
-					$cc_image_info = A5_Image::thumbnail($args);
+			$id = get_the_ID();
 					
-					$cc_thumb = $cc_image_info['thumb'];
+			$args = array (
+				'id' => $id,
+				'option' => 'cc_options',
+				'width' => $instance['width']
+			);
 					
-					$cc_width = $cc_image_info['thumb_width'];
+			$cc_image_info = A5_Image::thumbnail($args);
+					
+			$cc_thumb = $cc_image_info[0];
 			
-					$cc_height = $cc_image_info['thumb_height'];
+			$cc_width = $cc_image_info[1];
+	
+			$cc_height = ($cc_image_info[2]) ? 'height="'.$cc_image_info[2].' "' : '';
 					
-					if ($cc_thumb) :
+			if ($cc_thumb) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" '.$cc_height.'style="'.$cc_imgborder.'" />';
+			
+		endif;
 					
-						if ($cc_width) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" height="'.$cc_height.'" style="'.$cc_imgborder.'" />';
-							
-						else $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" style="maxwidth: '.$width.'; maxheight: '.$height.';'.$acc_imgborder.'" />';
-						
-					endif;
-					
-				else :
-				
-					$img_info = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'large');
-						
-					if (!$img_info):
-					
-						$src = get_the_post_thumbnail();
-						
-						$img = preg_match_all('/<\s*img[^>]+src\s*=\s*["\']?([^\s"\']+)["\']?[\s\/>]+/', $src, $matches);
-						
-						if ($img): 
-						
-							$img_info[0] = $matches[1][0];
-							
-							$img_size = A5_Image::get_size($img_info[0]);
-							
-							$img_info[1] = $img_size['width'];
-							
-							$img_info[2] = $img_size['height'];
-							
-						endif;
-						
-					endif;
-					
-					if ($img_info) :
-					
-						$args = array (
-							'ratio' => $img_info[1]/$img_info[2],
-							'thumb_width' => $img_info[1],
-							'thumb_height' => $img_info[2],
-							'width' => $default[0],
-							'height' => $default[1]
-						);
-						
-						$img_size = A5_Image::count_size($args);
-						
-						$atts = array('title' => $cc_image_title, 'alt' => $cc_image_alt, 'style' => $cc_imgborder);
-						
-						$size = array($img_size['width'], $img_size['height']);
-					
-						$cc_img = get_the_post_thumbnail($post->ID, $size, $atts);
-						
-					endif;
-					
-				endif;
-				
-			endif;
-					
-		if (isset($cc_img)) :
+		if (!empty($cc_img)) :
 			
 			echo '<a href="'.get_permalink().'">'.$cc_img.'</a>'.$eol.'<div style="clear: both;"></div>'.$eol.$cc_headline;
 	
@@ -337,7 +279,7 @@ function widget($args, $instance) {
 	wp_reset_query();
 	wp_reset_postdata();
 	
-	echo $cc_after_widget;
+	echo $after_widget;
 
 }
  
