@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.9
 Tested up to: 3.9
-Stable tag: 4.0
+Stable tag: 4.1
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -63,6 +63,10 @@ to the widget style to get a nice shadow down right of the container. This is no
 2. The widget's settings section
 
 == Changelog ==
+
+= 4.1 =
+
+* All 'Devided by Zero' errors should be eliminated
 
 = 4.0 =
 
@@ -161,7 +165,7 @@ Bugfix concerning title slugs; settings accessible from plugin page now
 The style textarea is now resizable and the input fields got smaller
 
 = 3.6 =
-Better excerpts and corract alt and title tags, fechting the thumbnails works now also with galleries
+Better excerpts and corract alt and title tags, fetching the thumbnails works now also with galleries
 
 = 3.7 =
 
@@ -187,3 +191,7 @@ adjustments in framework, possibility to add image border
 = 4.0 =
 
 Much better ability to recognize images, more foolproof and more flexible
+
+= 4.1 =
+
+All 'Devided by Zero' errors should be eliminated

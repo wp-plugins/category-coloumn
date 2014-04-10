@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Caegory Column\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/category-coloumn\n"
-"POT-Creation-Date: 2014-03-29 10:07+0200\n"
-"PO-Revision-Date: 2014-03-29 10:07+0200\n"
+"POT-Creation-Date: 2014-04-10 16:12+0200\n"
+"PO-Revision-Date: 2014-04-10 16:12+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language: nl_NL\n"
@@ -22,15 +22,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: category_column.php:103
+#: category_column.php:95
 msgid "FAQ"
 msgstr "FAQ"
 
-#: category_column.php:104
+#: category_column.php:96
 msgid "Donate"
 msgstr "Donatie"
 
-#: category_column.php:113 class-lib/A5_OptionPageClass.php:31
+#: category_column.php:105 class-lib/A5_OptionPageClass.php:31
 #: class-lib/CC_AdminClass.php:34
 msgid "Settings"
 msgstr "Instellingen"
@@ -95,9 +95,30 @@ msgstr ""
 "In sommige gevallen kan de dynamische style sheet niet worden geladen. Als "
 "je hier klickt, wordt de CSS inline in de HTML"
 
-#: class-lib/CC_AdminClass.php:98
+#: class-lib/CC_AdminClass.php:94
+msgid "entries"
+msgstr "objecten"
+
+#: class-lib/CC_AdminClass.php:94
+msgid "entry"
+msgstr "object"
+
+#: class-lib/CC_AdminClass.php:96
+#, php-format
+msgid "Empty cache (%d %s):"
+msgstr "Cache ledigen (%d %s):"
+
+#: class-lib/CC_AdminClass.php:96
+msgid "You can empty the plugin&#39;s cache here, if necessary."
+msgstr "Hier kun je de cache ledigen, als je wilt."
+
+#: class-lib/CC_AdminClass.php:104
 msgid "Just put some css code here."
 msgstr "Vul hier jouw css code in."
+
+#: class-lib/CC_AdminClass.php:143
+msgid "Cache emptied."
+msgstr "Cache geledigd."
 
 #: class-lib/CC_WidgetClass.php:20
 msgid ""

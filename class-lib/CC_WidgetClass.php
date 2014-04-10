@@ -105,17 +105,17 @@ function update($new_instance, $old_instance) {
 	$instance['offset'] = strip_tags($new_instance['offset']);
 	$instance['home'] = strip_tags($new_instance['home']);
 	$instance['list'] = strip_tags($new_instance['list']);
-	$instance['showcat'] = strip_tags($new_instance['showcat']);
+	$instance['showcat'] = @$new_instance['showcat'];
 	$instance['showcat_txt'] = strip_tags($new_instance['showcat_txt']); 	
 	$instance['wordcount'] = strip_tags($new_instance['wordcount']);
 	$instance['width'] = strip_tags($new_instance['width']);
-	$instance['words'] = strip_tags($new_instance['words']);
-	$instance['linespace'] = strip_tags($new_instance['linespace']);
+	$instance['words'] = @$new_instance['words'];
+	$instance['linespace'] = @$new_instance['linespace'];
 	$instance['line'] = strip_tags($new_instance['line']);
 	$instance['line_color'] = strip_tags($new_instance['line_color']);
 	$instance['style'] = strip_tags($new_instance['style']);
 	$instance['h'] = strip_tags($new_instance['h']);
-	$instance['headonly'] = strip_tags($new_instance['headonly']);
+	$instance['headonly'] = @$new_instance['headonly'];
 	$instance['imgborder'] = strip_tags($new_instance['imgborder']);
 	
 	return $instance;
@@ -130,7 +130,7 @@ function widget($args, $instance) {
 	
 	$title = apply_filters('widget_title', $instance['title']);
 	
-	if (empty($instance['style'])) :
+	if (!empty($instance['style'])) :
 			
 		$style=str_replace(array("\r\n", "\n", "\r"), '', $instance['style']);
 		
@@ -148,9 +148,9 @@ function widget($args, $instance) {
 	
 	$cc_setup['posts_per_page'] = $instance['postcount'];
 		
+		global $wp_query;
+		
 		if (is_category() || is_home() || empty($instance['home'])) :
-			
-			global $wp_query;
 			
 			$cc_page = $wp_query->get( 'paged' );
 			
@@ -167,8 +167,6 @@ function widget($args, $instance) {
 		if ($instance['list'] || !empty($cc_cat)) $cc_setup['cat'] = $instance['list'].$cc_cat;
 		
 		if (is_single()) :
-			
-			global $wp_query;
 			
 			$cc_setup['post__not_in'] = array($wp_query->get_queried_object_id()); 
 		
@@ -208,7 +206,7 @@ function widget($args, $instance) {
 		
 		if (empty($instance['headonly'])) :
 			
-			$cc_imgborder = (isset($instance['imgborder'])) ? ' border: '.$instance['imgborder'].';' : '';
+			$cc_imgborder = (!empty($instance['imgborder'])) ? ' style="border: '.$instance['imgborder'].';"' : '';
 			
 			$id = get_the_ID();
 					
@@ -224,9 +222,9 @@ function widget($args, $instance) {
 			
 			$cc_width = $cc_image_info[1];
 	
-			$cc_height = ($cc_image_info[2]) ? 'height="'.$cc_image_info[2].' "' : '';
+			$cc_height = ($cc_image_info[2]) ? 'height="'.$cc_image_info[2].'"' : '';
 					
-			if ($cc_thumb) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" '.$cc_height.'style="'.$cc_imgborder.'" />';
+			if ($cc_thumb) $cc_img = '<img title="'.$cc_image_title.'" src="'.$cc_thumb.'" alt="'.$cc_image_alt.'" class="wp-post-image" width="'.$cc_width.'" '.$cc_height.$cc_imgborder.' />';
 			
 		endif;
 					
