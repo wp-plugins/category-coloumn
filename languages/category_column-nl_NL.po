@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Caegory Column\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/category-coloumn\n"
-"POT-Creation-Date: 2014-04-10 16:12+0200\n"
-"PO-Revision-Date: 2014-04-10 16:12+0200\n"
+"POT-Creation-Date: 2014-04-25 23:45+0200\n"
+"PO-Revision-Date: 2014-04-25 23:45+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language: nl_NL\n"
@@ -31,7 +31,7 @@ msgid "Donate"
 msgstr "Donatie"
 
 #: category_column.php:105 class-lib/A5_OptionPageClass.php:31
-#: class-lib/CC_AdminClass.php:34
+#: class-lib/CC_AdminClass.php:48
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -43,7 +43,7 @@ msgstr "Link naar: "
 msgid "Click to toggle"
 msgstr "Klicken, om om te schakelen."
 
-#: class-lib/CC_AdminClass.php:47
+#: class-lib/CC_AdminClass.php:61
 msgid ""
 "http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-"
 "plugin"
@@ -51,23 +51,23 @@ msgstr ""
 "http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-"
 "plugin"
 
-#: class-lib/CC_AdminClass.php:47
+#: class-lib/CC_AdminClass.php:61
 msgid "Plugin Support"
 msgstr "Plugin Support"
 
-#: class-lib/CC_AdminClass.php:59
+#: class-lib/CC_AdminClass.php:73
 msgid "Debug Info"
 msgstr "Debug info"
 
-#: class-lib/CC_AdminClass.php:86
+#: class-lib/CC_AdminClass.php:100
 msgid "Styling of the widgets"
 msgstr "Styling van de widgets"
 
-#: class-lib/CC_AdminClass.php:88
+#: class-lib/CC_AdminClass.php:102
 msgid "Widget container:"
 msgstr "Widget container:"
 
-#: class-lib/CC_AdminClass.php:88
+#: class-lib/CC_AdminClass.php:102
 msgid ""
 "You can enter your own style for the widgets here. This will overwrite the "
 "styles of your theme."
@@ -75,7 +75,7 @@ msgstr ""
 "Je kunt hier je eigen stijl voor de widgets invoegen. Dat gaat de stijlen "
 "van je theme overschrijven."
 
-#: class-lib/CC_AdminClass.php:88
+#: class-lib/CC_AdminClass.php:102
 msgid ""
 "If you leave this empty, you can still style every instance of the widget "
 "individually."
@@ -83,11 +83,19 @@ msgstr ""
 "Als je dit veld leeg laat, kun je noch steeds elke instantie van de widget "
 "individueel aanpassen."
 
-#: class-lib/CC_AdminClass.php:90
+#: class-lib/CC_AdminClass.php:104
+msgid "Compress Style Sheet:"
+msgstr "Comprimeer Style Sheet:"
+
+#: class-lib/CC_AdminClass.php:104
+msgid "Click here to compress the style sheet."
+msgstr "Hier klikken, om het style sheet te comprimeren."
+
+#: class-lib/CC_AdminClass.php:106
 msgid "Debug:"
 msgstr "Debug:"
 
-#: class-lib/CC_AdminClass.php:90
+#: class-lib/CC_AdminClass.php:106
 msgid ""
 "If you can&#39;t reach the dynamical style sheet, you&#39;ll have to diplay "
 "the styles inline. By clicking here you can do so."
@@ -95,28 +103,28 @@ msgstr ""
 "In sommige gevallen kan de dynamische style sheet niet worden geladen. Als "
 "je hier klickt, wordt de CSS inline in de HTML"
 
-#: class-lib/CC_AdminClass.php:94
+#: class-lib/CC_AdminClass.php:110
 msgid "entries"
 msgstr "objecten"
 
-#: class-lib/CC_AdminClass.php:94
+#: class-lib/CC_AdminClass.php:110
 msgid "entry"
 msgstr "object"
 
-#: class-lib/CC_AdminClass.php:96
+#: class-lib/CC_AdminClass.php:112
 #, php-format
 msgid "Empty cache (%d %s):"
 msgstr "Cache ledigen (%d %s):"
 
-#: class-lib/CC_AdminClass.php:96
+#: class-lib/CC_AdminClass.php:112
 msgid "You can empty the plugin&#39;s cache here, if necessary."
 msgstr "Hier kun je de cache ledigen, als je wilt."
 
-#: class-lib/CC_AdminClass.php:104
+#: class-lib/CC_AdminClass.php:120
 msgid "Just put some css code here."
 msgstr "Vul hier jouw css code in."
 
-#: class-lib/CC_AdminClass.php:143
+#: class-lib/CC_AdminClass.php:166
 msgid "Cache emptied."
 msgstr "Cache geledigd."
 

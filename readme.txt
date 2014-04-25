@@ -3,8 +3,8 @@ Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.9
-Tested up to: 3.9
-Stable tag: 4.1
+Tested up to: 3.9.1
+Stable tag: 4.2
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -63,6 +63,10 @@ to the widget style to get a nice shadow down right of the container. This is no
 2. The widget's settings section
 
 == Changelog ==
+
+= 4.2 =
+
+* DSS now compressable
 
 = 4.1 =
 
@@ -195,3 +199,7 @@ Much better ability to recognize images, more foolproof and more flexible
 = 4.1 =
 
 All 'Devided by Zero' errors should be eliminated
+
+= 4.2 =
+
+DSS now compressable

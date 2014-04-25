@@ -19,8 +19,22 @@ class CC_Admin extends A5_OptionPage {
 	
 		add_action('admin_init', array(&$this, 'initialize_settings'));
 		add_action('admin_menu', array(&$this, 'add_admin_menu'));
+		if (WP_DEBUG == true) add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
 		
 		self::$options = get_option('cc_options');
+		
+	}
+	
+	/**
+	 *
+	 * Make debug info collapsable
+	 *
+	 */
+	function enqueue_scripts($hook){
+		
+		if ($hook != 'settings_page_category-column-settings') return;
+		
+		wp_enqueue_script('dashboard');
 		
 	}
 	
@@ -87,6 +101,8 @@ class CC_Admin extends A5_OptionPage {
 		
 		add_settings_field('cc_css', __('Widget container:', self::language_file), array(&$this, 'css_field'), 'cc_style', 'cc_settings', array(__('You can enter your own style for the widgets here. This will overwrite the styles of your theme.', self::language_file), __('If you leave this empty, you can still style every instance of the widget individually.', self::language_file)));
 		
+		add_settings_field('cc_compress', __('Compress Style Sheet:', self::language_file), array(&$this, 'compress_field'), 'cc_style', 'cc_settings', array(__('Click here to compress the style sheet.', self::language_file)));
+		
 		add_settings_field('cc_inline', __('Debug:', self::language_file), array(&$this, 'inline_field'), 'cc_style', 'cc_settings', array(__('If you can&#39;t reach the dynamical style sheet, you&#39;ll have to diplay the styles inline. By clicking here you can do so.', self::language_file)));
 		
 		$cachesize = count(self::$options['cache']);
@@ -113,6 +129,12 @@ class CC_Admin extends A5_OptionPage {
 		
 	}
 	
+	function compress_field($labels) {
+		
+		a5_checkbox('compress', 'cc_options[compress]', @self::$options['compress'], $labels[0]);
+		
+	}
+	
 	function inline_field($labels) {
 		
 		a5_checkbox('inline', 'cc_options[inline]', @self::$options['inline'], $labels[0]);
@@ -134,6 +156,7 @@ class CC_Admin extends A5_OptionPage {
 	function validate($input) {
 		
 		self::$options['css']=trim($input['css']);
+		self::$options['compress'] = isset($input['compress']) ? true : false;
 		self::$options['inline'] = isset($input['inline']) ? true : false;
 		
 		if (isset($input['reset_options'])) :
