@@ -5,11 +5,13 @@
  * Class A5 Excerpt
  *
  * @ A5 Plugin Framework
+ * Version: 1.0 beta 20141124
  *
  * Gets the excerpt of a post according to some parameters
  *
- * standard parameters: offset(=0), usertext, excerpt, excerpt_length
- * additional parameters: class(classname), filter(true/false), shortcode(true/false), readmore_link, readmore_text
+ * standard parameters: offset(=0), usertext, excerpt, count
+ * additional parameters: class(classname), filter(boolean), shortcode(boolean), format(boolean), links(boolean),
+ * readmore_link(boolean), readmore_text(string)
  *
  */
 
@@ -21,7 +23,15 @@ class A5_Excerpt {
 		
 		$offset = (isset($offset)) ? $offset : 0;
 		
-		$class = (isset($class)) ? ' class ="'.$class.'"' : '';
+		$class = (!empty($class)) ? ' class ="'.$class.'"' : '';
+		
+		$filter = (isset($filter)) ? $filter : false;
+		
+		$shortcode = (isset($shortcode)) ? $shortcode : false;
+		
+		$format = (isset($format)) ? $format : false;
+		
+		$links = (isset($links)) ? $links : false;
 		
 		if (!empty($usertext)) :
 		
@@ -35,35 +45,49 @@ class A5_Excerpt {
 				
 			else :
 			
-				$excerpt_base = (!empty($shortcode)) ? strip_tags(preg_replace('/\[caption(.*?)\[\/caption\]/', '', $content)) : strip_tags(strip_shortcodes($content));
+				$excerpt_base = (!empty($shortcode)) ? preg_replace('/(\[caption.*?caption\])/i', '', $content) : strip_shortcodes($content);
 			
-				$text = trim(preg_replace('/\s\s+/', ' ', str_replace(array("\r\n", "\n", "\r", "&nbsp;"), ' ', $excerpt_base)));
+				$text = (empty($format)) ? strip_tags(trim(preg_replace('/\s\s+/', ' ', str_replace(array("\r\n", "\n", "\r", "&nbsp;"), ' ', $excerpt_base)))) : preg_replace('#(<a.*?><img.*?></a>)|(<img.*?>)#i', '', $excerpt_base);
+				
+				if (!$links) $text = preg_replace('#(<a.*?>)|(</a>)#i', '', $text);
+				
+				//erase videos
+				
+				$text = preg_replace('/[^"](https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$][^"]/i', '', $text);
 				
 				$length = (isset($count)) ? $count : 3;
 				
 				$style = (isset($type)) ? $type : 'sentences';
 				
-				if ($style == 'words') :
-					
-					$short=array_slice(explode(' ', $text), $offset, $length);
-					
-					$output=trim(implode(' ', $short));
-					
-				else :
+				switch ($style) :
 				
-					if ($style == 'sentences') :
+					case 'words' :
+						
+						$short = array_slice(explode(' ', $text), $offset, $length);
+						
+						$output = trim(implode(' ', $short));
+						
+						break;
 					
-						$short=array_slice(preg_split("/([\t.!?]+)/", $text, -1, PREG_SPLIT_DELIM_CAPTURE), $offset*2, $length*2);
+					case 'sentences' :
 						
-						$output=trim(implode($short));
+						$short = array_slice(preg_split("/([\t.!?:]+)/", $text, -1, PREG_SPLIT_DELIM_CAPTURE), $offset*2, $length*2);
 						
-					else :
+						$output = trim(implode($short));
+							
+						break;
 						
-						$output=substr($text, $offset, $length);
+					case 'letters' :
+							
+						$output = substr($text, $offset, $length);
+							
+						break;
 						
-					endif;
+					default :
 					
-				endif;
+						$output = $text;
+					
+				endswitch;
 				
 			endif;
 			
@@ -71,21 +95,21 @@ class A5_Excerpt {
 		
 		if (!empty($linespace)) :
 		
-			$short=preg_split("/([\t.!?]+)/", $output, -1, PREG_SPLIT_DELIM_CAPTURE);
+			$short=preg_split("/([\t.!?:]+)/", $output, -1, PREG_SPLIT_DELIM_CAPTURE);
+			
+			$short[count($short)] = '';
 			
 			foreach ($short as $key => $pieces) :
 			
-				if (!($key % 2)) :
+				if (!($key % 2) && $key < (count($short)-1)) :
 				
-					$key2 = ($key < (count($short)-1)) ? $key+1 : $key;
-												  
-					$tmpex[] = implode(array($short[$key], $short[$key2]));
+					$tmpex[] = implode(array($short[$key], $short[$key+1]));
 					
 				endif;
 			
 			endforeach;
 			
-			$output=trim(implode('<br /><br />', $tmpex));
+			if (isset($tmpex)) $output = trim(implode('<br /><br />', $tmpex));
 		
 		endif;
 		
