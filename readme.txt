@@ -3,8 +3,8 @@ Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TQ9M9VJMAWA3Q
 Tags: column, sidebar, widget, category, newspaper, image, multi widget
 Requires at least: 2.9
-Tested up to: 3.9.1
-Stable tag: 4.2.2
+Tested up to: 4.1
+Stable tag: 4.3
 
 The Category Column does simply, what the name says; it will show excerpts of the latest posts in your sidebar.
 
@@ -63,6 +63,11 @@ to the widget style to get a nice shadow down right of the container. This is no
 2. The widget's settings section
 
 == Changelog ==
+
+= 4.3 =
+
+* WP 4.1 ready
+* New framework
 
 = 4.2.2 =
 
@@ -219,3 +224,7 @@ Interference with Wordpress Page Widgets eliminated
 = 4.2.2 =
 
 Mistake in image class fixed
+
+= 4.3 =
+
+WP 4.1 ready; new framework

@@ -2,8 +2,8 @@
 /*
 Plugin Name: Category Column
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/category-column-plugin
-Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 3.9. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets. You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
-Version: 4.2.2
+Description: The Category Column does simply, what the name says; it creates a widget, which you can drag to your sidebar and it will show excerpts of the posts of other categories than showed in the center-column. The plugin is tested with WP up to version 4.1. It might work with versions down to 2.7, but that will never be explicitly supported. The plugin has fully adjustable widgets. You can choose the number of posts displayed, the offset (only on your homepage or always) and whether or not a line is displayed between the posts. And much more.
+Version: 4.3
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 License: GPL3
@@ -49,7 +49,7 @@ if (!class_exists('Category_Column_Widget')) require_once CC_PATH.'class-lib/CC_
 
 class CategoryColumn {
 
-	const language_file = 'category_column';
+	const language_file = 'category_column', version = '4.3';
 
 	private static $options;
 
@@ -59,17 +59,17 @@ class CategoryColumn {
 	
 		load_plugin_textdomain(self::language_file, false , basename(dirname(__FILE__)).'/languages');
 		
-		add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 		
-		add_filter('plugin_row_meta', array(&$this, 'register_links'), 10, 2);	
-		add_filter( 'plugin_action_links', array(&$this, 'plugin_action_links'), 10, 2 );
+		add_filter('plugin_row_meta', array($this, 'register_links'), 10, 2);	
+		add_filter( 'plugin_action_links', array($this, 'plugin_action_links'), 10, 2 );
 				
-		register_activation_hook(  __FILE__, array(&$this, '_install') );
-		register_deactivation_hook(  __FILE__, array(&$this, '_uninstall') );
+		register_activation_hook(  __FILE__, array($this, '_install') );
+		register_deactivation_hook(  __FILE__, array($this, '_uninstall') );
 		
 		self::$options = get_option('cc_options');
 		
-		if (isset(self::$options['tags'])) $this->update_plugin_options();
+		if (self::version != self::$options['version']) $this->_update_options();
 		
 		$CC_DynamicCSS = new CC_DynamicCSS;
 		$CC_Admin = new CC_Admin;
@@ -82,7 +82,9 @@ class CategoryColumn {
 		
 		if ($hook != 'settings_page_category-column-settings' && $hook != 'widgets.php' && $hook != 'post.php') return;
 		
-		wp_register_script('ta-expander-script', plugins_url('ta-expander.js', __FILE__), array('jquery'), '2.0', true);
+		$min = (WP_DEBUG == false) ? '.min.' : '.';
+		
+		wp_register_script('ta-expander-script', plugins_url('ta-expander'.$min.'js', __FILE__), array('jquery'), '3.0', true);
 		wp_enqueue_script('ta-expander-script');
 	
 	}
@@ -103,7 +105,7 @@ class CategoryColumn {
 	function plugin_action_links( $links, $file ) {
 		
 		if ($file == CC_BASE) array_unshift($links, '<a href="'.admin_url( 'options-general.php?page=category-column-settings' ).'">'.__('Settings', self::language_file).'</a>');
-	
+		
 		return $links;
 	
 	}
@@ -113,8 +115,12 @@ class CategoryColumn {
 	function _install() {
 		
 		$default = array(
+			'version' => self::version,
 			'cache' => array(),
-			'inline' => false
+			'inline' => false,
+			'compress' => false,
+			'css' => "-moz-hyphens: auto;\n-o-hyphens: auto;\n-webkit-hyphens: auto;\n-ms-hyphens: auto;\nhyphens: auto;",
+			'binzwurst' => array(__METHOD__)
 		);
 		
 		add_option('cc_options', $default);
@@ -131,15 +137,25 @@ class CategoryColumn {
 	
 	// updating options in case they are outdated
 	
-	function update_plugin_options() {	
+	function _update_options() {
 		
-			self::$options['cache'] = array();
+		$options_old = get_option('cc_options');
+		
+		$eol = "\r\n";
+		
+		$css = '-moz-hyphens: auto;'.$eol.'-o-hyphens: auto;'.$eol.'-webkit-hyphens: auto;'.$eol.'-ms-hyphens: auto;'.$eol.'hyphens: auto;';
+		
+		$options_new['cache'] = array();
+		
+		$options_new['inline'] = (isset($options_old['inline'])) ? $options_old['inline'] : false;
+		
+		$options_new['compress'] = (isset($options_old['compress'])) ? $options_old['compress'] : false;
+		
+		$options_new['version'] = self::version;
+		
+		$options_new['css'] = (@$options_old['css']) ? $css.$eol.$options_old['css'] : $css;
 			
-			self::$options['inline'] = false;
-			
-			unset(self::$options['tags'], self::$options['sizes']);
-			
-			update_option('cc_options', self::$options);
+		update_option('cc_options', $options_new);
 	
 	}
 

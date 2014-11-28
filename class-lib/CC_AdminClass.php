@@ -17,9 +17,9 @@ class CC_Admin extends A5_OptionPage {
 	
 	function __construct() {
 	
-		add_action('admin_init', array(&$this, 'initialize_settings'));
-		add_action('admin_menu', array(&$this, 'add_admin_menu'));
-		if (WP_DEBUG == true) add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
+		add_action('admin_init', array($this, 'initialize_settings'));
+		add_action('admin_menu', array($this, 'add_admin_menu'));
+		if (WP_DEBUG == true) add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 		
 		self::$options = get_option('cc_options');
 		
@@ -36,6 +36,8 @@ class CC_Admin extends A5_OptionPage {
 		
 		wp_enqueue_script('dashboard');
 		
+		if (wp_is_mobile()) wp_enqueue_script('jquery-touch-punch');
+		
 	}
 	
 	/**
@@ -45,7 +47,7 @@ class CC_Admin extends A5_OptionPage {
 	 */
 	function add_admin_menu() {
 		
-		add_options_page('Category Column '.__('Settings', self::language_file), '<img alt="" src="'.plugins_url('category-coloumn/img/a5-icon-11.png').'"> Category Column', 'administrator', 'category-column-settings', array(&$this, 'build_options_page'));
+		add_options_page('Category Column '.__('Settings', self::language_file), '<img alt="" src="'.plugins_url('category-coloumn/img/a5-icon-11.png').'"> Category Column', 'administrator', 'category-column-settings', array($this, 'build_options_page'));
 		
 	}
 	
@@ -67,20 +69,12 @@ class CC_Admin extends A5_OptionPage {
 		submit_button();
 		
 		if (WP_DEBUG === true) :
+		
+			self::open_tab();
 			
-			echo '<div id="poststuff">';
-			
-			self::open_draggable(__('Debug Info', self::language_file), 'debug-info');
-			
-			echo '<pre>';
-			
-			var_dump(self::$options);
-			
-			echo '</pre>';
-			
-			self::close_draggable();
-			
-			echo '</div>';
+			self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
+		
+			self::close_tab();
 		
 		endif;
 		
@@ -95,29 +89,29 @@ class CC_Admin extends A5_OptionPage {
 	 */
 	function initialize_settings() {
 		
-		register_setting( 'cc_options', 'cc_options', array(&$this, 'validate') );
+		register_setting( 'cc_options', 'cc_options', array($this, 'validate') );
 		
-		add_settings_section('cc_settings', __('Styling of the widgets', self::language_file), array(&$this, 'display_section'), 'cc_style');
+		add_settings_section('cc_settings', __('Styling of the widgets', self::language_file), array($this, 'display_section'), 'cc_style');
 		
-		add_settings_field('cc_css', __('Widget container:', self::language_file), array(&$this, 'css_field'), 'cc_style', 'cc_settings', array(__('You can enter your own style for the widgets here. This will overwrite the styles of your theme.', self::language_file), __('If you leave this empty, you can still style every instance of the widget individually.', self::language_file)));
+		add_settings_field('cc_css', __('Widget container:', self::language_file), array($this, 'css_field'), 'cc_style', 'cc_settings', array(__('You can enter your own style for the widgets here. This will overwrite the styles of your theme.', self::language_file), __('If you leave this empty, you can still style every instance of the widget individually.', self::language_file)));
 		
-		add_settings_field('cc_compress', __('Compress Style Sheet:', self::language_file), array(&$this, 'compress_field'), 'cc_style', 'cc_settings', array(__('Click here to compress the style sheet.', self::language_file)));
+		add_settings_field('cc_compress', __('Compress Style Sheet:', self::language_file), array($this, 'compress_field'), 'cc_style', 'cc_settings', array(__('Click here to compress the style sheet.', self::language_file)));
 		
-		add_settings_field('cc_inline', __('Debug:', self::language_file), array(&$this, 'inline_field'), 'cc_style', 'cc_settings', array(__('If you can&#39;t reach the dynamical style sheet, you&#39;ll have to diplay the styles inline. By clicking here you can do so.', self::language_file)));
+		add_settings_field('cc_inline', __('Debug:', self::language_file), array($this, 'inline_field'), 'cc_style', 'cc_settings', array(__('If you can&#39;t reach the dynamical style sheet, you&#39;ll have to diplay the styles inline. By clicking here you can do so.', self::language_file)));
 		
 		$cachesize = count(self::$options['cache']);
 		
 		$entry = ($cachesize > 1) ? __('entries', self::language_file) : __('entry', self::language_file);
 		
-		if ($cachesize > 0) add_settings_field('cc_reset', sprintf(__('Empty cache (%d %s):', self::language_file), $cachesize, $entry), array(&$this, 'reset_field'), 'cc_style', 'cc_settings', array(__('You can empty the plugin&#39;s cache here, if necessary.', self::language_file)));
+		if ($cachesize > 0) add_settings_field('cc_reset', sprintf(__('Empty cache (%d %s):', self::language_file), $cachesize, $entry), array($this, 'reset_field'), 'cc_style', 'cc_settings', array(__('You can empty the plugin&#39;s cache here, if necessary.', self::language_file)));
 		
-		add_settings_field('cc_resize', false, array(&$this, 'resize_field'), 'cc_style', 'cc_settings');
+		add_settings_field('cc_resize', false, array($this, 'resize_field'), 'cc_style', 'cc_settings');
 	
 	}
 	
 	function display_section() {
 		
-		echo '<p>'.__('Just put some css code here.', self::language_file).'</p>';
+		self::tag_it(__('Just put some css code here.', self::language_file), 'p');
 	
 	}
 	
@@ -149,7 +143,7 @@ class CC_Admin extends A5_OptionPage {
 	
 	function resize_field() {
 		
-		a5_resize_textarea(array('css'));
+		a5_resize_textarea('css');
 		
 	}
 		
